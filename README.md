@@ -5,6 +5,7 @@ This repository contains a simple front end java script application using React 
 ## Tools Required
 * NodeJs 12: `node --version`
 * Npm 6: `npm --version`
+* Npx 6: `npx --version`
 
 ## Commands
 
@@ -23,3 +24,7 @@ This repository contains a simple front end java script application using React 
 ### Start application using production artifact
 
     npm run start
+
+### Export the app as a static website from production artifact
+
+    npm run export
