@@ -9,9 +9,8 @@
   "devDependencies": {},
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "export": "next export",
+    "build": "next build && next export -o out",
+    "start": "next build && next start",
     "test": "echo \"Error: no test specified\" && exit 1"
   }
 }

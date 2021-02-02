@@ -17,14 +17,10 @@ This repository contains a simple front end java script application using React 
 
     npm run dev
 
-### Build application to generate production artifact
+### Build application to generate production artifact and export as static website
 
     npm run build
 
 ### Start application using production artifact
 
     npm run start
-
-### Export the app as a static website from production artifact
-
-    npm run export
