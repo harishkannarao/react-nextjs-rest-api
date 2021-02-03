@@ -1,0 +1,4 @@
+{
+    "reporters": ["default", "jest-stare"],
+    "testResultsProcessor": "./node_modules/jest-stare"
+}
