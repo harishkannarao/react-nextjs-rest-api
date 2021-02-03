@@ -8,6 +8,7 @@
   },
   "devDependencies": {},
   "scripts": {
+    "postinstall": "npx next telemetry disable",
     "dev": "next dev",
     "build": "next build && next export -o out",
     "start": "next build && next start",
