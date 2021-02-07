@@ -25,10 +25,18 @@ This repository contains a simple front end java script application using React 
 
     npm run start
 
-### Run Jest test (interactive mode
+or
+
+    npm run build-serve
+
+### Run Jest test (interactive mode)
 
     npm run test
 
 ### Run Jest test (non-interactive mode)
 
     npm run test:ci
+
+### Run CI tests
+
+    npm run start-server-and-test
