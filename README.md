@@ -37,6 +37,14 @@ or
 
     npm run test:ci
 
+### Run Cypress test (interactive mode)
+
+    npm run cypress:open-functional
+
+### Run Cypress test (non-interactive mode)
+
+    npm run cypress:run-functional
+
 ### Run CI tests
 
-    npm run start-server-and-test
+    npm run test:ci && npm run start-server-and-test
