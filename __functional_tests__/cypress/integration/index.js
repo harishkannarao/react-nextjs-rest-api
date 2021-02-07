@@ -1,6 +1,7 @@
 describe('Test Index Page', () => {
     it('Displays message', () => {
-        cy.visit('http://localhost:3001');
+        const baseUrl = Cypress.env('BASE_URL')
+        cy.visit(baseUrl);
 
         cy.get('[data-testid="message"]')
             .should(($div) => {

@@ -27,14 +27,14 @@
   },
   "scripts": {
     "postinstall": "npx next telemetry disable",
-    "dev": "next dev",
+    "dev": "next dev -p 3000",
     "build": "next build && next export -o out",
-    "start": "next build && next start",
+    "start": "next build && next start -p 3000",
     "test": "jest --watchAll=true",
     "test:ci": "jest --watchAll=false --config=./jest-ci.config.json",
     "cypress:open-functional": "cypress open --config-file cypress-functional.json",
     "cypress:run-functional": "cypress run --config-file cypress-functional.json",
-    "build-serve": "next build && next export -o out && serve --listen 3001 out",
-    "start-server-and-test": "start-server-and-test build-serve 3001 cypress:run-functional"
+    "build-serve": "next build && next export -o out && serve --listen 3000 out",
+    "start-server-and-test": "start-server-and-test build-serve 3000 cypress:run-functional"
   }
 }
