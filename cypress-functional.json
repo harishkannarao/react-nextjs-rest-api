@@ -12,7 +12,8 @@
         "html":true,
         "json": false 
     },
+    "baseUrl": "http://localhost:3000",
     "env": {
-        "BASE_URL": "http://localhost:3000"
+        "FOO": "BAR"
     }
 }
