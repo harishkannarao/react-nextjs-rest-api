@@ -47,4 +47,12 @@ or
 
 ### Run CI tests
 
-    npm run test:run-ci && npm run build && npm run export && npm run start-server-and-test
+    ./ci-build.sh
+
+### Changing default parameters using environment variables
+
+    export PORT=4000
+    export OUT_DIR=prod_artifact
+    export CYPRESS_BASE_URL=http://localhost:4000
+
+    ./ci-build.sh
