@@ -6,7 +6,7 @@ set -e
 # Print the commands as it is executed. Useful for debugging
 set -x
 
-mkdir jest-stare
+mkdir -p jest-stare
 
 mkdir -p cypress-report/mochawesome-report
 
