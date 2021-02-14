@@ -6,6 +6,10 @@ set -e
 # Print the commands as it is executed. Useful for debugging
 set -x
 
+mkdir jest-stare
+
+mkdir -p cypress-report/mochawesome-report
+
 npm install
 
 npm run test:run-ci
