@@ -1,16 +1,15 @@
 import React from 'react';
+import Head from 'next/head'
 
 export class HomePage extends React.Component {
     render() {
         return (
-            <html>
-                <head>
-                    <title>Next.js</title>
-                </head>
-                <body>
-                    <div data-testid="message">Welcome to Next.js!!!</div>
-                </body>
-            </html>           
+            <div>
+                <Head>
+                    <title>Next.js!!!</title>
+                </Head>
+                <div data-testid="message">Welcome to Next.js!!!</div>
+            </div>
         );
     }
 }

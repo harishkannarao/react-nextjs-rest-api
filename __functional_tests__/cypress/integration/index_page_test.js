@@ -2,6 +2,8 @@ describe('Test Index Page', () => {
     it('Displays message', () => {
         cy.visit("/");
 
+        cy.title().should('eq', 'Next.js!!!');
+
         cy.get('[data-testid="message"]')
             .should(($div) => {
                 expect($div).to.have.length(1)

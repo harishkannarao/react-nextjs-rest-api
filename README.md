@@ -3,7 +3,7 @@
 This repository contains a simple front end java script application using React + NextJs connecting to a backend Http Rest Api.
 
 ## Tools Required
-* NodeJs 12: `node --version`
+* NodeJs 14: `node --version`
 * Npm 6: `npm --version`
 * Npx 6: `npx --version`
 

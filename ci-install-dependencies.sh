@@ -15,3 +15,5 @@ node --version
 npm --version
 
 npx --version
+
+npm install
