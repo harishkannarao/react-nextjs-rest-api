@@ -14,4 +14,4 @@ npm run build
 
 npm run export
 
-aws s3 sync ./out/ s3://${BUCKET_NAME}/
+aws s3 sync out/ s3://${BUCKET_NAME}/
