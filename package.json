@@ -23,7 +23,8 @@
     "mocha": "7.2.0",
     "mochawesome": "6.1.1",
     "mochawesome-merge": "4.1.0",
-    "mochawesome-report-generator": "5.1.0"
+    "mochawesome-report-generator": "5.1.0",
+    "open-api-mocker": "1.5.1"
   },
   "scripts": {
     "postinstall": "npx next telemetry disable",
@@ -36,6 +37,7 @@
     "test:run-ci": "jest --watchAll=false --config=./jest-ci.config.json",
     "cypress": "cypress open --config-file cypress-functional.json",
     "cypress:run-ci": "cypress run --config-file cypress-functional.json",
-    "start-server-and-test": "start-server-and-test serve ${PORT:-3000} cypress:run-ci"
+    "start-server-and-test": "start-server-and-test serve ${PORT:-3000} cypress:run-ci",
+    "open-api-mocker": "open-api-mocker --port 8180 --schema open_api_spec/OpenApiSpec.json"
   }
 }

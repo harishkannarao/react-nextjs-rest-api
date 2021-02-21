@@ -29,6 +29,10 @@ or
 
     npm run build && npm run export && npm run serve
 
+### Start Open Api Mocker
+
+    npm run open-api-mocker
+
 ### Run Jest test (interactive mode)
 
     npm run test
