@@ -1,6 +1,6 @@
 describe('Test Sample Page', () => {
     it('Displays message', () => {
-        cy.visit("/sample/sample_page");
+        cy.visit("/sample/sample_page.html");
         
         cy.title().should('eq', 'Sample')
 
