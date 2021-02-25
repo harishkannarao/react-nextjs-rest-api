@@ -24,7 +24,8 @@ export class Example extends React.Component {
         error
       });
     }
-    executeGet("https://api.github.com/repos/tannerlinsley/react-query", successHandler, errorHandler);
+    var url = process.env.NEXT_PUBLIC_API_BASE_URL + "/repos/tannerlinsley/react-query";
+    executeGet(url, successHandler, errorHandler);
   }
 
   componentDidMount() {
