@@ -27,7 +27,8 @@ describe('Example Component test', () => {
 
         render(<Example />)
         await waitForExpect(() => {
-            expect(screen.queryByTestId('name').textContent).toBe('unit-test-name')
+            expect(screen.queryAllByTestId('initial-message')).toEqual([]);   
         });
+        expect(screen.queryByTestId('name').textContent).toBe('unit-test-name');
     });
 });

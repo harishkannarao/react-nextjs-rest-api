@@ -1,5 +1,5 @@
 import React from "react";
-import { executeGet } from "./api";
+import { executeGet } from "../common/api";
 
 export class Example extends React.Component {
   constructor(props) {
@@ -34,9 +34,17 @@ export class Example extends React.Component {
   }
 
   render() {
-    if (this.state.isLoading) return "Loading...";
+    if (this.state.isLoading) {
+      return (
+        <div data-testid="initial-message">"Loading..."</div>
+      );
+    }
 
-    if (this.state.error) return "An error has occurred: " + JSON.stringify(this.state.error);
+    if (this.state.error) {
+      return (
+        "An error has occurred: " + JSON.stringify(this.state.error)
+      );
+    };
 
     return (
       <div>
