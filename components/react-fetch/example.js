@@ -36,18 +36,18 @@ export class Example extends React.Component {
   render() {
     if (this.state.isLoading) {
       return (
-        <div data-testid="initial-message">"Loading..."</div>
+        <div data-testid="initial-content">"Loading..."</div>
       );
     }
 
     if (this.state.error) {
       return (
-        "An error has occurred: " + JSON.stringify(this.state.error)
+        <div data-testid="error-content">"An error has occurred: " + {JSON.stringify(this.state.error.response)}</div>
       );
     };
 
     return (
-      <div>
+      <div data-testid="success-content">
         <h1 data-testid="name">{this.state.data.name}</h1>
         <p data-testid="description">{this.state.data.description}</p>
         <strong>👀 <span data-testid="subscribers_count">{this.state.data.subscribers_count}</span></strong>{" "}
