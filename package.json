@@ -4,7 +4,8 @@
   "dependencies": {
     "next": "10.0.6",
     "react": "17.0.1",
-    "react-dom": "17.0.1"
+    "react-dom": "17.0.1",
+    "axios": "0.21.1"
   },
   "devDependencies": {
     "@babel/preset-env": "7.12.13",
@@ -24,7 +25,8 @@
     "mochawesome": "6.1.1",
     "mochawesome-merge": "4.1.0",
     "mochawesome-report-generator": "5.1.0",
-    "open-api-mocker": "1.5.1"
+    "open-api-mocker": "1.5.1",
+    "msw": "0.27.0"
   },
   "scripts": {
     "postinstall": "npx next telemetry disable",
@@ -33,7 +35,7 @@
     "export": "next export -o ${OUT_DIR:-out}",
     "start": "next start -p ${PORT:-3000}",
     "serve": "serve --listen ${PORT:-3000} ${OUT_DIR:-out}",
-    "test": "jest --watchAll=true",
+    "test": "jest --watchAll=true --config=./jest.config.json",
     "test:run-ci": "jest --watchAll=false --config=./jest-ci.config.json",
     "cypress": "cypress open --config-file cypress-functional.json",
     "cypress:run-ci": "cypress run --config-file cypress-functional.json",

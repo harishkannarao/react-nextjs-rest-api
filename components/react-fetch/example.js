@@ -15,17 +15,18 @@ export class Example extends React.Component {
     var successHandler = (result) => {
       this.setState({
         isLoading: false,
-        data: result
+        data: result.data
       });
     }
-    var errorHandler = (error) => {
+    var errorHandler = (httpError) => {
       this.setState({
         isLoading: false,
-        error
+        error: httpError
       });
     }
-    var url = process.env.NEXT_PUBLIC_API_BASE_URL + "/repos/tannerlinsley/react-query";
-    executeGet(url, successHandler, errorHandler);
+    const url = process.env.NEXT_PUBLIC_API_BASE_URL + "/repos/tannerlinsley/react-query";
+    const queryParams = {}
+    executeGet(url, queryParams, successHandler, errorHandler);
   }
 
   componentDidMount() {
@@ -35,15 +36,15 @@ export class Example extends React.Component {
   render() {
     if (this.state.isLoading) return "Loading...";
 
-    if (this.state.error) return "An error has occurred: " + this.state.error.message;
+    if (this.state.error) return "An error has occurred: " + JSON.stringify(this.state.error);
 
     return (
       <div>
-        <h1>{this.state.data.name}</h1>
-        <p>{this.state.data.description}</p>
-        <strong>👀 {this.state.data.subscribers_count}</strong>{" "}
-        <strong>✨ {this.state.data.stargazers_count}</strong>{" "}
-        <strong>🍴 {this.state.data.forks_count}</strong>
+        <h1 data-testid="name">{this.state.data.name}</h1>
+        <p data-testid="description">{this.state.data.description}</p>
+        <strong>👀 <span data-testid="subscribers_count">{this.state.data.subscribers_count}</span></strong>{" "}
+        <strong>✨ <span data-testid="stargazers_count">{this.state.data.stargazers_count}</span></strong>{" "}
+        <strong>🍴 <span data-testid="forks_count">{this.state.data.forks_count}</span></strong>
       </div>
     );
   }
