@@ -28,6 +28,6 @@ describe('Example Component test', () => {
         render(<Example />)
         await waitForExpect(() => {
             expect(screen.queryByTestId('name').textContent).toBe('unit-test-name')
-        }, 2000, 50);
+        });
     });
 });
