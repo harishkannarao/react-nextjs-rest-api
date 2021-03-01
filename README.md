@@ -56,7 +56,9 @@ or
 ### Changing default parameters using environment variables
 
     export PORT=4000
-    export OUT_DIR=prod_artifact
-    export CYPRESS_BASE_URL=http://localhost:4000
+    export NEXT_BASE_PATH=/my-app
+    export OUT_DIR=prod_artifact/my-app
+    export SERVE_DIR=prod_artifact
+    export CYPRESS_BASE_URL=http://localhost:4000/my-app
 
     ./ci-build.sh

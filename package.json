@@ -33,7 +33,7 @@
     "build": "next build",
     "export": "next export -o ${OUT_DIR:-out}",
     "start": "next start -p ${PORT:-3000}",
-    "serve": "serve --listen ${PORT:-3000} ${OUT_DIR:-out}",
+    "serve": "serve --listen ${PORT:-3000} ${SERVE_DIR:-out}",
     "test": "jest --watchAll=true --config=./jest.config.json",
     "test:run-ci": "jest --watchAll=false --config=./jest-ci.config.json",
     "cypress": "cypress open --config-file cypress-functional.json",
