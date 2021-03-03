@@ -1,5 +1,5 @@
 import React from "react";
-import { executeGet } from "../common/api";
+import { getRepoData } from "../common/github";
 import { Stats } from "./stats";
 
 
@@ -14,21 +14,19 @@ export class Example extends React.Component {
   }
 
   fetchData() {
-    var successHandler = (result) => {
+    const successHandler = (result) => {
       this.setState({
         isLoading: false,
         data: result.data
       });
     }
-    var errorHandler = (httpError) => {
+    const errorHandler = (httpError) => {
       this.setState({
         isLoading: false,
         error: httpError
       });
     }
-    const url = process.env.NEXT_PUBLIC_API_BASE_URL + "/repos/tannerlinsley/react-query";
-    const queryParams = {}
-    executeGet(url, queryParams, successHandler, errorHandler);
+    getRepoData("tannerlinsley", "react-query", successHandler, errorHandler);
   }
 
   componentDidMount() {
