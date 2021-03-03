@@ -1,5 +1,6 @@
 import React from 'react';
 import Head from 'next/head'
+import Link from 'next/link'
 
 export class HomePage extends React.Component {
     render() {
@@ -9,6 +10,9 @@ export class HomePage extends React.Component {
                     <title>Next.js!!!</title>
                 </Head>
                 <div data-testid="message">Welcome to Next.js!!!</div>
+                <Link href="/customers/list/">
+                    <a>Customers List</a>
+                </Link>
             </div>
         );
     }
