@@ -1,5 +1,7 @@
 import React from "react";
 import { executeGet } from "../common/api";
+import { Stats } from "./stats";
+
 
 export class Example extends React.Component {
   constructor(props) {
@@ -50,9 +52,11 @@ export class Example extends React.Component {
       <div data-testid="success-content">
         <h1 data-testid="name">{this.state.data.name}</h1>
         <p data-testid="description">{this.state.data.description}</p>
-        <strong>👀 <span data-testid="subscribers_count">{this.state.data.subscribers_count}</span></strong>{" "}
-        <strong>✨ <span data-testid="stargazers_count">{this.state.data.stargazers_count}</span></strong>{" "}
-        <strong>🍴 <span data-testid="forks_count">{this.state.data.forks_count}</span></strong>
+        <Stats 
+          subscribers_count={this.state.data.subscribers_count}
+          stargazers_count={this.state.data.stargazers_count}
+          forks_count={this.state.data.forks_count}
+        />
       </div>
     );
   }
