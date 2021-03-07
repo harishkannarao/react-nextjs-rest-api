@@ -2,6 +2,7 @@ import React from 'react';
 import Head from 'next/head'
 import Link from 'next/link'
 import { listCustomers } from "../../components/common/customer";
+import { CustomerList } from "../../components/customer/customer";
 
 export class CustomersListPage extends React.Component {
     constructor(props) {
@@ -45,9 +46,12 @@ export class CustomersListPage extends React.Component {
                 { this.state.isLoading &&
                     <div data-testid="initial-content">"Loading..."</div>
                 }
-                { this.state.error
-                    ? <div data-testid="error-content">"An error has occurred: " + {JSON.stringify(this.state.error.response)}</div>
-                    : <div data-testid="success-content">"Success: " + {JSON.stringify(this.state.data)}</div>
+                { this.state.error &&
+                    <div data-testid="error-content">"An error has occurred: " + {JSON.stringify(this.state.error.response)}</div>
+                }
+                {
+                    this.state.data &&
+                    <CustomerList data={this.state.data} />
                 }
             </div>
         );
