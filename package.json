@@ -38,7 +38,7 @@
     "test:run-ci": "jest --watchAll=false --config=./jest-ci.config.json",
     "cypress": "cypress open --config-file cypress-functional.json",
     "cypress:run-ci": "cypress run --config-file cypress-functional.json",
-    "start-server-and-test": "start-server-and-test serve ${PORT:-3000} cypress:run-ci",
+    "start-server-and-test": "start-server-and-test dev ${PORT:-3000} cypress:run-ci",
     "open-api-mocker": "open-api-mocker --port 8181 --schema open_api_spec/OpenApiSpec.json"
   }
 }
