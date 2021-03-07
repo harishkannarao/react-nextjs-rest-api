@@ -13,17 +13,19 @@ export function CustomerList(props) {
         <Customer key={item.id} value={item} />
     )
     return (
-        <table>
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                </tr>
-            </thead>
-            <tbody>
-                {customers}
-            </tbody>
-        </table>
+        <div data-testid="success-content">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {customers}
+                </tbody>
+            </table>
+        </div>
     )
 }
