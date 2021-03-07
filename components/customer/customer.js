@@ -3,7 +3,7 @@ export function Customer(props) {
         <tr>
             <td data-testid="id">{props.value.id}</td>
             <td data-testid="firstName">{props.value.firstName}</td>
-            <td data-testid="lastName">{props.value.firstName}</td>
+            <td data-testid="lastName">{props.value.lastName}</td>
         </tr>
     )
 }

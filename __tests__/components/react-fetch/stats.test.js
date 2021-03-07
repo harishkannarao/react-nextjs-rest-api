@@ -1,7 +1,5 @@
 import React from 'react'
-import { render, fireEvent, screen } from '@testing-library/react'
-import { server } from '../../server'
-import { rest } from 'msw'
+import { render, screen } from '@testing-library/react'
 
 import { Stats } from "../../../components/react-fetch/stats";
 
