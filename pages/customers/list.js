@@ -43,6 +43,10 @@ export class CustomersListPage extends React.Component {
                 <Link href="/">
                     <a>Home</a>
                 </Link>
+                <br />
+                <Link href="/customers/new/">
+                    <a>New - Customer</a>
+                </Link>
                 { this.state.isLoading &&
                     <div data-testid="initial-content">"Loading..."</div>
                 }

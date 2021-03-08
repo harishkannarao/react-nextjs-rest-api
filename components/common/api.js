@@ -5,3 +5,9 @@ export function executeGet(url, queryParams, successHandler, errorHandler) {
       .then(successHandler)
       .catch(errorHandler);
 };
+
+export function executePost(url, data, successHandler, errorHandler) {
+    axios.post(url, data, {timeout: 1000})
+      .then(successHandler)
+      .catch(errorHandler);
+};
