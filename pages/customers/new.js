@@ -15,6 +15,7 @@ export class NewCustomerPage extends React.Component {
         };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleCancel = this.handleCancel.bind(this);
     }
 
     handleInputChange(event) {
@@ -55,6 +56,11 @@ export class NewCustomerPage extends React.Component {
         createCustomer(data, successHandler, errorHandler);
     }
 
+    handleCancel(event) {
+        event.preventDefault();
+        this.props.router.push('/customers/list/');
+    }
+
     render() {
         return (
             <div>
@@ -71,7 +77,8 @@ export class NewCustomerPage extends React.Component {
                 { this.state.submittingData &&
                     <div data-testid="initial-content">"Submitting..."</div>
                 }
-                { this.state.error &&
+                { !this.state.submittingData &&
+                    this.state.error &&
                     <div data-testid="error-content">"An error has occurred: " + {JSON.stringify(this.state.error.response)}</div>
                 }
                 <form onSubmit={this.handleSubmit}>
@@ -90,6 +97,7 @@ export class NewCustomerPage extends React.Component {
                     </label>
                     <br />
                     <input type="submit" value="Submit" />
+                    <input type="button" onClick={this.handleCancel} value="Cancel" />
                 </form>
             </div>
         );
