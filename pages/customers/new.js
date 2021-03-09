@@ -76,7 +76,7 @@ export class NewCustomerPage extends React.Component {
                 </Link>
                 {
                     this.state.submittingData ? (
-                        <div data-testid="initial-content">"Submitting..."</div>
+                        <div data-testid="submitting-content">"Submitting..."</div>
                     ) : (
                         this.state.error && (
                             <div data-testid="error-content">"An error has occurred: " + {JSON.stringify(this.state.error.response)}</div>
@@ -99,7 +99,7 @@ export class NewCustomerPage extends React.Component {
                     </label>
                     <br />
                     <input type="submit" value="Submit" />
-                    <input type="button" onClick={this.handleCancel} value="Cancel" />
+                    <input data-testid="cancel-button" type="button" onClick={this.handleCancel} value="Cancel" />
                 </form>
             </div>
         );
