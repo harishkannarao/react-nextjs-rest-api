@@ -68,11 +68,11 @@ export class NewCustomerPage extends React.Component {
                     <title>New - Customers</title>
                 </Head>
                 <Link href="/">
-                    <a>Home</a>
+                    <a data-testid="home-link">Home</a>
                 </Link>
                 <br />
                 <Link href="/customers/list/">
-                    <a>List - Customers</a>
+                    <a data-testid="list-customers-link">List - Customers</a>
                 </Link>
                 {
                     this.state.submittingData ? (
