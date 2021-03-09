@@ -41,11 +41,11 @@ export class CustomersListPage extends React.Component {
                     <title>List - Customers</title>
                 </Head>
                 <Link href="/">
-                    <a>Home</a>
+                    <a data-testid="home-link">Home</a>
                 </Link>
                 <br />
                 <Link href="/customers/new/">
-                    <a>New - Customer</a>
+                    <a data-testid="new-customer-link">New - Customer</a>
                 </Link>
                 {
                     this.state.isLoading

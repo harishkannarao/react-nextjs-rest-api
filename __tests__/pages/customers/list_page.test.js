@@ -80,4 +80,22 @@ describe('CustomersListPage Component test', () => {
         expect(screen.queryByTestId('initial-content').textContent).toContain('Loading...');
         await screen.findByTestId('error-content', {}, {'timeout': 2000});
     });
+
+    test('displays navigation links correctly', async () => {
+        const apiUrl = process.env.NEXT_PUBLIC_CUSTOMER_API_BASE_URL + "/customers"
+        server.use(
+            rest.get(apiUrl, (req, res, ctx) => {
+                return res(
+                    ctx.status(200),
+                    ctx.json([]),
+                )
+            }),
+        );
+
+        render(<CustomersListPage />);
+        await screen.findByTestId('success-content');
+
+        expect(screen.queryByTestId('home-link').getAttribute("href")).toBe('/');
+        expect(screen.queryByTestId('new-customer-link').getAttribute("href")).toBe('/customers/new');
+    });
 });
