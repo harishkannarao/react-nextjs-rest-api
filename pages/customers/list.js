@@ -47,15 +47,15 @@ export class CustomersListPage extends React.Component {
                 <Link href="/customers/new/">
                     <a>New - Customer</a>
                 </Link>
-                { this.state.isLoading &&
-                    <div data-testid="initial-content">"Loading..."</div>
-                }
-                { this.state.error &&
-                    <div data-testid="error-content">"An error has occurred: " + {JSON.stringify(this.state.error.response)}</div>
-                }
                 {
-                    this.state.data &&
-                    <CustomerList data={this.state.data} />
+                    this.state.isLoading
+                        ? (
+                            <div data-testid="initial-content">"Loading..."</div>
+                        ) : (
+                            this.state.error
+                                ? <div data-testid="error-content">"An error has occurred: " + {JSON.stringify(this.state.error.response)}</div>
+                                : <CustomerList data={this.state.data} />
+                        )
                 }
             </div>
         );

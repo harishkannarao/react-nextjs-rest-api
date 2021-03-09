@@ -74,12 +74,14 @@ export class NewCustomerPage extends React.Component {
                 <Link href="/customers/list/">
                     <a>List - Customers</a>
                 </Link>
-                { this.state.submittingData &&
-                    <div data-testid="initial-content">"Submitting..."</div>
-                }
-                { !this.state.submittingData &&
-                    this.state.error &&
-                    <div data-testid="error-content">"An error has occurred: " + {JSON.stringify(this.state.error.response)}</div>
+                {
+                    this.state.submittingData ? (
+                        <div data-testid="initial-content">"Submitting..."</div>
+                    ) : (
+                        this.state.error && (
+                            <div data-testid="error-content">"An error has occurred: " + {JSON.stringify(this.state.error.response)}</div>
+                        )
+                    )
                 }
                 <form onSubmit={this.handleSubmit}>
                     <label>
