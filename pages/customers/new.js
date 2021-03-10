@@ -67,38 +67,34 @@ export class NewCustomerPage extends React.Component {
                 <Head>
                     <title>New - Customers</title>
                 </Head>
-                <Link href="/">
-                    <a data-testid="home-link">Home</a>
-                </Link>
+                <a data-testid="home-link" href={this.props.router.basePath + "/"}>Home</a>
                 <br />
-                <Link href="/customers/list/">
-                    <a data-testid="list-customers-link">List - Customers</a>
-                </Link>
+                <a data-testid="list-customers-link" href={this.props.router.basePath + "/customers/list/"}>List - Customers</a>
                 {
                     this.state.submittingData ? (
                         <div data-testid="submitting-content">"Submitting..."</div>
                     ) : (
-                        this.state.error && (
-                            <div data-testid="error-content">"An error has occurred: " + {JSON.stringify(this.state.error.response)}</div>
+                            this.state.error && (
+                                <div data-testid="error-content">"An error has occurred: " + {JSON.stringify(this.state.error.response)}</div>
+                            )
                         )
-                    )
                 }
                 <form onSubmit={this.handleSubmit}>
                     <label>
                         First Name:
-          <input name="inputFirstName" type="text"
+          <input data-testid="first-name" name="inputFirstName" type="text"
                             value={this.state.inputFirstName}
                             onChange={this.handleInputChange} />
                     </label>
                     <br />
                     <label>
                         Last Name:
-          <input name="inputLastName" type="text"
+          <input data-testid="last-name" name="inputLastName" type="text"
                             value={this.state.inputLastName}
                             onChange={this.handleInputChange} />
                     </label>
                     <br />
-                    <input type="submit" value="Submit" />
+                    <input data-testid="submit-button" type="submit" value="Submit" />
                     <input data-testid="cancel-button" type="button" onClick={this.handleCancel} value="Cancel" />
                 </form>
             </div>
