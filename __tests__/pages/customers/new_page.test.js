@@ -58,12 +58,64 @@ describe('NewCustomerPage Component test', () => {
 
         fireEvent.change(screen.getByTestId("first-name"), { target: { value: 'test-first-name' } });
         fireEvent.change(screen.getByTestId("last-name"), { target: { value: 'test-last-name' } });
-        fireEvent.click(screen.getByTestId("submit-button"))
+        fireEvent.click(screen.getByTestId("submit-button"));
 
         await waitFor(() => expect(redirectUrl).toBe('/customers/list/'));
 
         await waitFor(() => expect(requestJson).not.toBeNull());
         expect(requestJson.firstName).toBe('test-first-name');
         expect(requestJson.lastName).toBe('test-last-name');
-    })
+    });
+
+    test('displays error from api', async () => {
+        const apiUrl = process.env.NEXT_PUBLIC_CUSTOMER_API_BASE_URL + "/customers"
+        server.use(
+            rest.post(apiUrl, (req, res, ctx) => {
+                return res(
+                    ctx.status(500),
+                    ctx.json({'message': 'unit-test-error'}),
+                )
+            }),
+        );
+        const mockRouter = {
+            basePath: "",
+            push: function(url) {
+                return;
+            }
+        }
+
+        render(<NewCustomerPage router={mockRouter} />);
+
+        fireEvent.click(screen.getByTestId("submit-button"));
+
+        await screen.findByTestId('error-content');
+        expect(screen.queryByTestId('error-content').textContent).toContain('unit-test-error');
+        expect(screen.queryByTestId('error-content').textContent).toContain('Internal Server Error');
+    });
+
+    test('displays submitting content when waiting for response from api', async () => {
+        const apiUrl = process.env.NEXT_PUBLIC_CUSTOMER_API_BASE_URL + "/customers"
+        server.use(
+            rest.post(apiUrl, (req, res, ctx) => {
+                return res(
+                    ctx.delay(500),
+                    ctx.status(500),
+                    ctx.json({'message': 'unit-test-error'}),
+                )
+            }),
+        );
+
+        const mockRouter = {
+            basePath: "",
+            push: function(url) {
+                return;
+            }
+        }
+
+        render(<NewCustomerPage router={mockRouter} />);
+
+        fireEvent.click(screen.getByTestId("submit-button"));
+        expect(screen.queryByTestId('submitting-content').textContent).toBe('Submitting...');
+        await screen.findByTestId('error-content', {}, {'timeout': 1000});
+    });
 });

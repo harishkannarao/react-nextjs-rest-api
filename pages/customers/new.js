@@ -72,7 +72,7 @@ export class NewCustomerPage extends React.Component {
                 <a data-testid="list-customers-link" href={this.props.router.basePath + "/customers/list/"}>List - Customers</a>
                 {
                     this.state.submittingData ? (
-                        <div data-testid="submitting-content">"Submitting..."</div>
+                        <div data-testid="submitting-content">Submitting...</div>
                     ) : (
                             this.state.error && (
                                 <div data-testid="error-content">"An error has occurred: " + {JSON.stringify(this.state.error.response)}</div>
