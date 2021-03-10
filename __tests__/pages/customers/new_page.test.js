@@ -39,6 +39,7 @@ describe('NewCustomerPage Component test', () => {
             rest.post(apiUrl, (req, res, ctx) => {
                 requestJson = req.body
                 return res(
+                    ctx.delay(500),
                     ctx.status(200),
                 )
             }),
@@ -60,6 +61,9 @@ describe('NewCustomerPage Component test', () => {
         fireEvent.change(screen.getByTestId("last-name"), { target: { value: 'test-last-name' } });
         fireEvent.click(screen.getByTestId("submit-button"));
 
+        expect(screen.queryByTestId('submitting-content')).not.toBeNull();
+        await waitFor(() => expect(screen.queryByTestId('submitting-content')).toBeNull());
+
         await waitFor(() => expect(redirectUrl).toBe('/customers/list/'));
 
         await waitFor(() => expect(requestJson).not.toBeNull());
@@ -72,39 +76,12 @@ describe('NewCustomerPage Component test', () => {
         server.use(
             rest.post(apiUrl, (req, res, ctx) => {
                 return res(
-                    ctx.status(500),
-                    ctx.json({'message': 'unit-test-error'}),
-                )
-            }),
-        );
-        const mockRouter = {
-            basePath: "",
-            push: function(url) {
-                return;
-            }
-        }
-
-        render(<NewCustomerPage router={mockRouter} />);
-
-        fireEvent.click(screen.getByTestId("submit-button"));
-
-        await screen.findByTestId('error-content');
-        expect(screen.queryByTestId('error-content').textContent).toContain('unit-test-error');
-        expect(screen.queryByTestId('error-content').textContent).toContain('Internal Server Error');
-    });
-
-    test('displays submitting content when waiting for response from api', async () => {
-        const apiUrl = process.env.NEXT_PUBLIC_CUSTOMER_API_BASE_URL + "/customers"
-        server.use(
-            rest.post(apiUrl, (req, res, ctx) => {
-                return res(
                     ctx.delay(500),
                     ctx.status(500),
                     ctx.json({'message': 'unit-test-error'}),
                 )
             }),
         );
-
         const mockRouter = {
             basePath: "",
             push: function(url) {
@@ -115,7 +92,12 @@ describe('NewCustomerPage Component test', () => {
         render(<NewCustomerPage router={mockRouter} />);
 
         fireEvent.click(screen.getByTestId("submit-button"));
-        expect(screen.queryByTestId('submitting-content').textContent).toBe('Submitting...');
-        await screen.findByTestId('error-content', {}, {'timeout': 1000});
+
+        expect(screen.queryByTestId('submitting-content')).not.toBeNull();
+        await waitFor(() => expect(screen.queryByTestId('submitting-content')).toBeNull());
+
+        await screen.findByTestId('error-content');
+        expect(screen.queryByTestId('error-content').textContent).toContain('unit-test-error');
+        expect(screen.queryByTestId('error-content').textContent).toContain('Internal Server Error');
     });
 });
