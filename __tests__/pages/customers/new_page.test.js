@@ -19,15 +19,17 @@ describe('NewCustomerPage Component test', () => {
     });
 
     test('cancel button', async () => {
+        var redirectUrl = null;
         const mockRouter = {
             basePath: "",
             push: function(url) {
-                expect(url).toBe("/customers/list/");
+                redirectUrl = url;
                 return;
             }
         }
         render(<NewCustomerPage router={mockRouter} />);
-        fireEvent.click(screen.getByTestId("cancel-button"))
+        fireEvent.click(screen.getByTestId("cancel-button"));
+        expect(redirectUrl).toBe('/customers/list/');
     });
 
     test('new customer creation', async () => {
