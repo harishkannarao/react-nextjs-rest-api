@@ -10,12 +10,14 @@ export class HomePage extends React.Component {
                     <title>Next.js!!!</title>
                 </Head>
                 <div data-testid="message">Welcome to Next.js!!!</div>
-                <Link href="/customers/list/">
-                    <a>Customers List</a>
-                </Link>
+                <h3>
+                    <Link href="/customers/list/">
+                        <a>Customers List</a>
+                    </Link>
+                </h3>
             </div>
         );
     }
 }
 
-export default HomePage  
+export default HomePage

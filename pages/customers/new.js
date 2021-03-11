@@ -67,9 +67,8 @@ export class NewCustomerPage extends React.Component {
                 <Head>
                     <title>New - Customers</title>
                 </Head>
-                <a data-testid="home-link" href={this.props.router.basePath + "/"}>Home</a>
-                <br />
-                <a data-testid="list-customers-link" href={this.props.router.basePath + "/customers/list/"}>List - Customers</a>
+                <h3><a data-testid="home-link" href={this.props.router.basePath + "/"}>Home</a></h3>
+                <h3><a data-testid="list-customers-link" href={this.props.router.basePath + "/customers/list/"}>List - Customers</a></h3>
                 {
                     this.state.submittingData ? (
                         <div data-testid="submitting-content">Submitting...</div>
