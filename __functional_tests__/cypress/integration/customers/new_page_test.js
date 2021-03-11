@@ -25,7 +25,7 @@ describe('Test New Customer Page', () => {
                 {
                     statusCode: 200,
                     delay: 500,
-                    body: {}
+                    body: null
                 }
             );
         });
