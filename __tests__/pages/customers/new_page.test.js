@@ -6,22 +6,24 @@ import { rest } from 'msw'
 import { NewCustomerPage } from "../../../pages/customers/new";
 
 describe('NewCustomerPage Component test', () => {
-    test('displays navigation links correctly', async () => {
+    test('navigation links', async () => {
+        var redirectUrl = null;
         const mockRouter = {
-            basePath: "/test-base-path",
             push: function(url) {
+                redirectUrl = url;
                 return;
             }
         }
         render(<NewCustomerPage router={mockRouter} />);
-        expect(screen.queryByTestId('home-link').getAttribute("href")).toBe('/test-base-path/');
-        expect(screen.queryByTestId('list-customers-link').getAttribute("href")).toBe('/test-base-path/customers/list/');
+        fireEvent.click(screen.queryByTestId('home-link'));
+        expect(redirectUrl).toBe('/');
+        fireEvent.click(screen.queryByTestId('list-customers-link'));
+        expect(redirectUrl).toBe('/customers/list/');
     });
 
     test('cancel button', async () => {
         var redirectUrl = null;
         const mockRouter = {
-            basePath: "",
             push: function(url) {
                 redirectUrl = url;
                 return;
@@ -47,7 +49,6 @@ describe('NewCustomerPage Component test', () => {
 
         var redirectUrl = null;
         const mockRouter = {
-            basePath: "",
             push: function(url) {
                 redirectUrl = url;
                 return;
@@ -83,7 +84,6 @@ describe('NewCustomerPage Component test', () => {
             }),
         );
         const mockRouter = {
-            basePath: "",
             push: function(url) {
                 return;
             }
