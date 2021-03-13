@@ -75,9 +75,10 @@ export class NewCustomerPage extends React.Component {
                 <h3><a data-testid="home-link" onClick={this.handleAnchorLinkClick} href="/">Home</a></h3>
                 <h3><a data-testid="list-customers-link" onClick={this.handleAnchorLinkClick} href="/customers/list/">List - Customers</a></h3>
                 {
-                    this.state.submittingData ? (
-                        <div data-testid="submitting-content">Submitting...</div>
-                    ) : (
+                    this.state.submittingData
+                        ? (
+                            <div data-testid="submitting-content">Submitting...</div>
+                        ) : (
                             this.state.error && (
                                 <div data-testid="error-content">"An error has occurred: " + {JSON.stringify(this.state.error.response)}</div>
                             )
