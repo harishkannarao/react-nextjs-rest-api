@@ -56,8 +56,11 @@ export class CustomersListPage extends React.Component {
                             <div data-testid="initial-content">"Loading..."</div>
                         ) : (
                             this.state.error
-                                ? <div data-testid="error-content">"An error has occurred: " + {JSON.stringify(this.state.error.response)}</div>
-                                : <CustomerList data={this.state.data} />
+                                ? (
+                                    <div data-testid="error-content">"An error has occurred: " + {JSON.stringify(this.state.error.response)}</div>
+                                ) : (
+                                    <CustomerList data={this.state.data} />
+                                )
                         )
                 }
             </div>
