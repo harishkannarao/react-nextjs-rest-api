@@ -1,7 +1,7 @@
 import React from 'react';
 import Head from 'next/head'
 import Link from 'next/link'
-import { listCustomers } from "../../components/common/customer";
+import { listCustomers, deleteCustomer } from "../../components/common/customer";
 import { CustomerList } from "../../components/customer/customer";
 
 export class CustomersListPage extends React.Component {
@@ -10,24 +10,42 @@ export class CustomersListPage extends React.Component {
         this.state = {
             error: null,
             isLoading: true,
+            isSubmitting: false,
             data: null
         };
+        this.handleDeleteCustomer = this.handleDeleteCustomer.bind(this);
+        this.errorHandler = this.errorHandler.bind(this);
+    }
+
+    errorHandler(httpError) {
+        this.setState({
+            isLoading: false,
+            isSubmitting: false,
+            error: httpError
+        });
+    }
+
+    handleDeleteCustomer(event) {
+        event.preventDefault();
+        this.setState({
+            isSubmitting: true
+        });
+        const successHandler = (result) => {
+            this.fetchData();
+        }
+        const data = {'id': event.target.dataset.id}
+        deleteCustomer(data, successHandler, this.errorHandler)
     }
 
     fetchData() {
         const successHandler = (result) => {
             this.setState({
                 isLoading: false,
+                isSubmitting: false,
                 data: result.data
             });
         }
-        const errorHandler = (httpError) => {
-            this.setState({
-                isLoading: false,
-                error: httpError
-            });
-        }
-        listCustomers(successHandler, errorHandler);
+        listCustomers(successHandler, this.errorHandler);
     }
 
     componentDidMount() {
@@ -59,7 +77,7 @@ export class CustomersListPage extends React.Component {
                                 ? (
                                     <div data-testid="error-content">"An error has occurred: " + {JSON.stringify(this.state.error.response)}</div>
                                 ) : (
-                                    <CustomerList data={this.state.data} />
+                                    <CustomerList isSubmitting={this.state.isSubmitting} handleDeleteCustomer={this.handleDeleteCustomer} data={this.state.data} />
                                 )
                         )
                 }

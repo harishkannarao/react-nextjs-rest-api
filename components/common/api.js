@@ -11,3 +11,9 @@ export function executePost(url, data, successHandler, errorHandler) {
       .then(successHandler)
       .catch(errorHandler);
 };
+
+export function executeDelete(url, data, successHandler, errorHandler) {
+    axios.delete(url, {data: data, timeout: 1000})
+      .then(successHandler)
+      .catch(errorHandler);
+};
