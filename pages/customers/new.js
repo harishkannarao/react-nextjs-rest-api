@@ -14,13 +14,18 @@ export class NewCustomerPage extends React.Component {
         };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
-        this.handleCancel = this.handleCancel.bind(this);
-        this.handleLinkClick = this.handleLinkClick.bind(this);
+        this.handleAnchorLinkClick = this.handleAnchorLinkClick.bind(this);
+        this.handleButtonLinkClick = this.handleButtonLinkClick.bind(this);
     }
 
-    handleLinkClick(event) {
+    handleAnchorLinkClick(event) {
         event.preventDefault();
         this.props.router.push(event.target.getAttribute('href'));
+    }
+
+    handleButtonLinkClick(event) {
+        event.preventDefault();
+        this.props.router.push(event.target.getAttribute('data-href'));
     }
 
     handleInputChange(event) {
@@ -61,19 +66,14 @@ export class NewCustomerPage extends React.Component {
         createCustomer(data, successHandler, errorHandler);
     }
 
-    handleCancel(event) {
-        event.preventDefault();
-        this.props.router.push('/customers/list/');
-    }
-
     render() {
         return (
             <div>
                 <Head>
                     <title>New - Customers</title>
                 </Head>
-                <h3><a data-testid="home-link" onClick={this.handleLinkClick} href="/">Home</a></h3>
-                <h3><a data-testid="list-customers-link" onClick={this.handleLinkClick} href="/customers/list/">List - Customers</a></h3>
+                <h3><a data-testid="home-link" onClick={this.handleAnchorLinkClick} href="/">Home</a></h3>
+                <h3><a data-testid="list-customers-link" onClick={this.handleAnchorLinkClick} href="/customers/list/">List - Customers</a></h3>
                 {
                     this.state.submittingData ? (
                         <div data-testid="submitting-content">Submitting...</div>
@@ -99,7 +99,7 @@ export class NewCustomerPage extends React.Component {
                     </label>
                     <br />
                     <input data-testid="submit-button" type="submit" value="Submit" />
-                    <input data-testid="cancel-button" type="button" onClick={this.handleCancel} value="Cancel" />
+                    <input data-testid="cancel-button" type="button" data-href="/customers/list/" onClick={this.handleButtonLinkClick} value="Cancel" />
                 </form>
             </div>
         );
