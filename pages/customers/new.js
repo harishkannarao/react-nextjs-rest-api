@@ -1,6 +1,7 @@
 import React from 'react';
 import Head from 'next/head'
 import { withRouter } from 'next/router'
+import Link from 'next/link'
 import { createCustomer } from '../../components/common/customer'
 
 export class NewCustomerPage extends React.Component {
@@ -14,13 +15,7 @@ export class NewCustomerPage extends React.Component {
         };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
-        this.handleAnchorLinkClick = this.handleAnchorLinkClick.bind(this);
         this.handleButtonLinkClick = this.handleButtonLinkClick.bind(this);
-    }
-
-    handleAnchorLinkClick(event) {
-        event.preventDefault();
-        this.props.router.push(event.target.getAttribute('href'));
     }
 
     handleButtonLinkClick(event) {
@@ -72,8 +67,8 @@ export class NewCustomerPage extends React.Component {
                 <Head>
                     <title>New - Customers</title>
                 </Head>
-                <h3><a data-testid="home-link" onClick={this.handleAnchorLinkClick} href="/">Home</a></h3>
-                <h3><a data-testid="list-customers-link" onClick={this.handleAnchorLinkClick} href="/customers/list/">List - Customers</a></h3>
+                <h3><Link href="/"><a data-testid="home-link">Home</a></Link></h3>
+                <h3><Link href="/customers/list/"><a data-testid="list-customers-link">List - Customers</a></Link></h3>
                 {
                     this.state.submittingData
                         ? (

@@ -15,10 +15,8 @@ describe('NewCustomerPage Component test', () => {
             }
         }
         render(<NewCustomerPage router={mockRouter} />);
-        fireEvent.click(screen.queryByTestId('home-link'));
-        expect(redirectUrl).toBe('/');
-        fireEvent.click(screen.queryByTestId('list-customers-link'));
-        expect(redirectUrl).toBe('/customers/list/');
+        expect(screen.queryByTestId('home-link').getAttribute("href")).toBe('/');
+        expect(screen.queryByTestId('list-customers-link').getAttribute("href")).toBe('/customers/list');
     });
 
     test('cancel button', async () => {
