@@ -6,6 +6,16 @@ import { rest } from 'msw'
 import { NewCustomerPage } from "../../../pages/customers/new";
 
 describe('NewCustomerPage Component test', () => {
+    beforeEach(() => {
+        server.use(
+            rest.post(process.env.NEXT_PUBLIC_CUSTOMER_API_BASE_URL + "/customers", (req, res, ctx) => {
+                return res(
+                    ctx.status(200),
+                )
+            }),
+        );
+    });
+
     test('navigation links', async () => {
         var redirectUrl = null;
         const mockRouter = {
