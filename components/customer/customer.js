@@ -11,29 +11,29 @@ export function Customer(props) {
 
 export function CustomerList(props) {
     return (
-        <div data-testid="success-content">
-            <table>
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Id</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        props.isSubmitting
-                            ? (
-                                <div>Submitting...</div>
-                            ) : (
+        props.isProcessing
+            ? (
+                <div data-testid="processing-content">Processing...</div>
+            ) : (
+                <div data-testid="success-content">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Id</th>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
                                 props.data.map((item) =>
                                     <Customer handleDeleteCustomer={props.handleDeleteCustomer} key={item.id} value={item} />
                                 )
-                            )
-                    }
-                </tbody>
-            </table>
-        </div>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            )
     )
 }

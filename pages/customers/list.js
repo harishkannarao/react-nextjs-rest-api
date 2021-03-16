@@ -10,7 +10,7 @@ export class CustomersListPage extends React.Component {
         this.state = {
             error: null,
             isLoading: true,
-            isSubmitting: false,
+            isProcessing: false,
             data: null
         };
         this.handleDeleteCustomer = this.handleDeleteCustomer.bind(this);
@@ -19,8 +19,7 @@ export class CustomersListPage extends React.Component {
 
     errorHandler(httpError) {
         this.setState({
-            isLoading: false,
-            isSubmitting: false,
+            isProcessing: false,
             error: httpError
         });
     }
@@ -28,7 +27,7 @@ export class CustomersListPage extends React.Component {
     handleDeleteCustomer(event) {
         event.preventDefault();
         this.setState({
-            isSubmitting: true
+            isProcessing: true
         });
         const successHandler = (result) => {
             this.fetchData();
@@ -38,10 +37,12 @@ export class CustomersListPage extends React.Component {
     }
 
     fetchData() {
+        this.setState({
+            isProcessing: true
+        });
         const successHandler = (result) => {
             this.setState({
-                isLoading: false,
-                isSubmitting: false,
+                isProcessing: false,
                 data: result.data
             });
         }
@@ -49,6 +50,9 @@ export class CustomersListPage extends React.Component {
     }
 
     componentDidMount() {
+        this.setState({
+            isLoading: false
+        });
         this.fetchData();
     }
 
@@ -77,7 +81,7 @@ export class CustomersListPage extends React.Component {
                                 ? (
                                     <div data-testid="error-content">"An error has occurred: " + {JSON.stringify(this.state.error.response)}</div>
                                 ) : (
-                                    <CustomerList isSubmitting={this.state.isSubmitting} handleDeleteCustomer={this.handleDeleteCustomer} data={this.state.data} />
+                                    <CustomerList isProcessing={this.state.isProcessing} handleDeleteCustomer={this.handleDeleteCustomer} data={this.state.data} />
                                 )
                         )
                 }

@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, fireEvent, screen } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { server } from '../../server'
 import { rest } from 'msw'
 
@@ -77,7 +77,7 @@ describe('CustomersListPage Component test', () => {
         );
 
         render(<CustomersListPage />);
-        expect(screen.queryByTestId('initial-content').textContent).toContain('Loading...');
+        expect(screen.queryByTestId('processing-content').textContent).toContain('Processing...');
         await screen.findByTestId('error-content', {}, {'timeout': 2000});
     });
 
