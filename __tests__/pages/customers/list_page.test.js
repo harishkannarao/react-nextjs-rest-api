@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, screen } from '@testing-library/react'
+import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { server } from '../../server'
 import { rest } from 'msw'
 
@@ -97,5 +97,52 @@ describe('CustomersListPage Component test', () => {
 
         expect(screen.queryByTestId('home-link').getAttribute("href")).toBe('/');
         expect(screen.queryByTestId('new-customer-link').getAttribute("href")).toBe('/customers/new');
+    });
+
+    test('customer deletion', async () => {
+        var listCustomersCount = 0;
+        var deleteRequestJson = null;
+        server.use(
+            rest.get(process.env.NEXT_PUBLIC_CUSTOMER_API_BASE_URL + "/customers", (req, res, ctx) => {
+                listCustomersCount = listCustomersCount + 1;
+                return res(
+                    ctx.status(200),
+                    ctx.json(
+                        [
+                            {
+                                id: 1,
+                                firstName: 'test-first-name-1',
+                                lastName: 'test-last-name-1'
+                            },
+                            {
+                                id: 2,
+                                firstName: 'test-first-name-2',
+                                lastName: 'test-last-name-2'
+                            }
+                        ]
+                    ),
+                )
+            }),
+            rest.delete(process.env.NEXT_PUBLIC_CUSTOMER_API_BASE_URL + "/customers", (req, res, ctx) => {
+                deleteRequestJson = req.body
+                return res(
+                    ctx.delay(500),
+                    ctx.status(200),
+                )
+            }),
+        );
+
+        render(<CustomersListPage />)
+        await screen.findByTestId('success-content');
+        expect(listCustomersCount).toBe(1);
+
+        fireEvent.click(screen.getAllByTestId("delete-button")[1]);
+        await screen.findByTestId('processing-content');
+        await waitFor(() => expect(screen.queryByTestId('processing-content')).toBeNull());
+
+        await waitFor(() => expect(deleteRequestJson).not.toBeNull());
+        expect(deleteRequestJson.id).toBe(2);
+
+        expect(listCustomersCount).toBe(2);
     });
 });

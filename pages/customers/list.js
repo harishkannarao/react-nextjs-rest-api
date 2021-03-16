@@ -32,7 +32,7 @@ export class CustomersListPage extends React.Component {
         const successHandler = (result) => {
             this.fetchData();
         }
-        const data = {'id': event.target.dataset.id}
+        const data = {'id': Number(event.target.dataset.id)}
         deleteCustomer(data, successHandler, this.errorHandler)
     }
 
