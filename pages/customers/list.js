@@ -9,9 +9,8 @@ export class CustomersListPage extends React.Component {
         super(props);
         this.state = {
             error: null,
-            isLoading: true,
             isProcessing: false,
-            data: null
+            data: []
         };
         this.handleDeleteCustomer = this.handleDeleteCustomer.bind(this);
         this.errorHandler = this.errorHandler.bind(this);
@@ -43,16 +42,14 @@ export class CustomersListPage extends React.Component {
         const successHandler = (result) => {
             this.setState({
                 isProcessing: false,
-                data: result.data
+                data: result.data,
+                error: null,
             });
         }
         listCustomers(successHandler, this.errorHandler);
     }
 
     componentDidMount() {
-        this.setState({
-            isLoading: false
-        });
         this.fetchData();
     }
 
@@ -73,18 +70,10 @@ export class CustomersListPage extends React.Component {
                     </Link>
                 </h3>
                 {
-                    this.state.isLoading
-                        ? (
-                            <div data-testid="initial-content">"Loading..."</div>
-                        ) : (
-                            this.state.error
-                                ? (
-                                    <div data-testid="error-content">"An error has occurred: " + {JSON.stringify(this.state.error.response)}</div>
-                                ) : (
-                                    <CustomerList isProcessing={this.state.isProcessing} handleDeleteCustomer={this.handleDeleteCustomer} data={this.state.data} />
-                                )
-                        )
+                    this.state.error &&
+                        <div data-testid="error-content">"An error has occurred: " + {JSON.stringify(this.state.error.response)}</div>
                 }
+                <CustomerList isProcessing={this.state.isProcessing} handleDeleteCustomer={this.handleDeleteCustomer} data={this.state.data} />
             </div>
         );
     }
