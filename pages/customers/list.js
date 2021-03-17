@@ -70,7 +70,7 @@ export class CustomersListPage extends React.Component {
                     </Link>
                 </h3>
                 {
-                    this.state.error &&
+                    !this.state.isProcessing && this.state.error &&
                         <div data-testid="error-content">"An error has occurred: " + {JSON.stringify(this.state.error.response)}</div>
                 }
                 <CustomerList isProcessing={this.state.isProcessing} handleDeleteCustomer={this.handleDeleteCustomer} data={this.state.data} />

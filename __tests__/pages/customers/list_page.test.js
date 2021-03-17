@@ -6,7 +6,7 @@ import { rest } from 'msw'
 import { CustomersListPage } from "../../../pages/customers/list";
 
 describe('CustomersListPage Component test', () => {
-    test('displays data from api', async () => {
+    test('displays multiple customers from api', async () => {
         const apiUrl = process.env.NEXT_PUBLIC_CUSTOMER_API_BASE_URL + "/customers"
         const apiResponse = [
             {
@@ -39,6 +39,21 @@ describe('CustomersListPage Component test', () => {
         expect(screen.getAllByTestId('id')[1].textContent).toBe('2');
         expect(screen.getAllByTestId('firstName')[1].textContent).toBe('test-first-name-2');
         expect(screen.getAllByTestId('lastName')[1].textContent).toBe('test-last-name-2');
+    });
+
+    test('displays empty customers', async () => {
+        server.use(
+            rest.get(process.env.NEXT_PUBLIC_CUSTOMER_API_BASE_URL + "/customers", (req, res, ctx) => {
+                return res(
+                    ctx.status(200),
+                    ctx.json([]),
+                )
+            }),
+        );
+
+        render(<CustomersListPage />)
+        await screen.findByTestId('success-content');
+        expect(screen.queryByTestId('id')).toBeNull();
     });
 
     test('displays error from api', async () => {
@@ -144,5 +159,52 @@ describe('CustomersListPage Component test', () => {
         expect(deleteRequestJson.id).toBe(2);
 
         expect(listCustomersCount).toBe(2);
+    });
+
+    test('display error during customer deletion', async () => {
+        server.use(
+            rest.get(process.env.NEXT_PUBLIC_CUSTOMER_API_BASE_URL + "/customers", (req, res, ctx) => {
+                return res(
+                    ctx.status(200),
+                    ctx.json(
+                        [
+                            {
+                                id: 1,
+                                firstName: 'test-first-name-1',
+                                lastName: 'test-last-name-1'
+                            }
+                        ]
+                    ),
+                )
+            }),
+            rest.delete(process.env.NEXT_PUBLIC_CUSTOMER_API_BASE_URL + "/customers", (req, res, ctx) => {
+                return res(
+                    ctx.status(500),
+                    ctx.json({'message': 'unit-test-error'}),
+                )
+            }),
+        );
+
+        render(<CustomersListPage />)
+        await screen.findByTestId('success-content');
+        
+        fireEvent.click(screen.getAllByTestId("delete-button")[0]);
+        
+        await screen.findByTestId('error-content');
+        expect(screen.queryByTestId('error-content').textContent).toContain('unit-test-error');
+
+        server.use(
+            rest.delete(process.env.NEXT_PUBLIC_CUSTOMER_API_BASE_URL + "/customers", (req, res, ctx) => {
+                return res(
+                    ctx.status(200),
+                )
+            }),
+        );
+
+        fireEvent.click(screen.getAllByTestId("delete-button")[0]);
+
+        await screen.findByTestId('success-content');
+        await waitFor(() => expect(screen.queryByTestId('error-content')).toBeNull());
+        expect(screen.queryByTestId('id')).not.toBeNull();
     });
 });
