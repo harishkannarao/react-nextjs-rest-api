@@ -1,6 +1,7 @@
 import React from 'react';
 import Head from 'next/head'
 import Link from 'next/link'
+import { withRouter } from 'next/router'
 import { listCustomers, deleteCustomer } from "../../components/common/customer";
 import { CustomerList } from "../../components/customer/customer";
 
@@ -73,10 +74,10 @@ export class CustomersListPage extends React.Component {
                     !this.state.isProcessing && this.state.error &&
                         <div data-testid="error-content">"An error has occurred: " + {JSON.stringify(this.state.error.response)}</div>
                 }
-                <CustomerList isProcessing={this.state.isProcessing} handleDeleteCustomer={this.handleDeleteCustomer} data={this.state.data} />
+                <CustomerList router={this.props.router} isProcessing={this.state.isProcessing} handleDeleteCustomer={this.handleDeleteCustomer} data={this.state.data} />
             </div>
         );
     }
 }
 
-export default CustomersListPage 
+export default withRouter(CustomersListPage)

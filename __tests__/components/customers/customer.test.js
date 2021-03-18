@@ -40,9 +40,15 @@ describe('CustomerList Component test', () => {
                 lastName: 'test-last-name-2'
             }
         ]
+        const mockRouter = {
+            pathname: '',
+            query: {}
+        }
+
         render(
             <CustomerList
                 data={customersData}
+                router={mockRouter}
             />
         )
         expect(screen.getAllByTestId('id')[0].textContent).toBe('1');
@@ -53,4 +59,23 @@ describe('CustomerList Component test', () => {
         expect(screen.getAllByTestId('firstName')[1].textContent).toBe('test-first-name-2');
         expect(screen.getAllByTestId('lastName')[1].textContent).toBe('test-last-name-2');
     });
+
+    test('displays go to top and bottom links', async () => {
+        const customersData = []
+        const mockRouter = {
+            pathname: 'test-pathname',
+            query: { test: 'value' }
+        }
+
+        const result = render(
+            <CustomerList
+                data={customersData}
+                router={mockRouter}
+            />
+        )
+        expect(result.container.querySelector('#customer-table-top')).not.toBeNull()
+        expect(result.container.querySelector('#customer-table-bottom')).not.toBeNull()
+        expect(screen.getByTestId('go-to-bottom-link').getAttribute('href')).toBe('/test-pathname?test=value#customer-table-bottom')
+        expect(screen.getByTestId('go-to-top-link').getAttribute('href')).toBe('/test-pathname?test=value#customer-table-top')
+    })
 });

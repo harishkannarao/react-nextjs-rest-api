@@ -1,3 +1,5 @@
+import Link from 'next/link'
+
 export function Customer(props) {
     return (
         <tr>
@@ -16,6 +18,12 @@ export function CustomerList(props) {
                 <div data-testid="processing-content">Processing...</div>
             ) : (
                 <div data-testid="success-content">
+                    <span id="customer-table-top"></span>
+                    <Link href={{
+                        pathname: props.router.pathname,
+                        query: props.router.query,
+                        hash: 'customer-table-bottom',
+                    }}><a data-testid='go-to-bottom-link'>Go to Bottom</a></Link>
                     <table>
                         <thead>
                             <tr>
@@ -33,6 +41,12 @@ export function CustomerList(props) {
                             }
                         </tbody>
                     </table>
+                    <span id="customer-table-bottom"></span>
+                    <Link href={{
+                        pathname: props.router.pathname,
+                        query: props.router.query,
+                        hash: 'customer-table-top',
+                    }}><a data-testid='go-to-top-link'>Go to Top</a></Link>
                 </div>
             )
     )

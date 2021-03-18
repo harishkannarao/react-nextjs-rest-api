@@ -29,7 +29,12 @@ describe('CustomersListPage Component test', () => {
             }),
         );
 
-        render(<CustomersListPage />)
+        const mockRouter = {
+            pathname: '',
+            query: {}
+        }
+
+        render(<CustomersListPage router={mockRouter}/>)
         await screen.findByTestId('success-content');
 
         expect(screen.getAllByTestId('id')[0].textContent).toBe('1');
@@ -51,7 +56,12 @@ describe('CustomersListPage Component test', () => {
             }),
         );
 
-        render(<CustomersListPage />)
+        const mockRouter = {
+            pathname: '',
+            query: {}
+        }
+
+        render(<CustomersListPage router={mockRouter}/>)
         await screen.findByTestId('success-content');
         expect(screen.queryByTestId('id')).toBeNull();
     });
@@ -70,7 +80,12 @@ describe('CustomersListPage Component test', () => {
             }),
         );
 
-        render(<CustomersListPage />)
+        const mockRouter = {
+            pathname: '',
+            query: {}
+        }
+
+        render(<CustomersListPage router={mockRouter}/>)
         await screen.findByTestId('error-content');
         expect(screen.queryByTestId('error-content').textContent).toContain('unit-test-error');
         expect(screen.queryByTestId('error-content').textContent).toContain('Internal Server Error');
@@ -91,7 +106,12 @@ describe('CustomersListPage Component test', () => {
             }),
         );
 
-        render(<CustomersListPage />);
+        const mockRouter = {
+            pathname: '',
+            query: {}
+        }
+
+        render(<CustomersListPage router={mockRouter}/>)
         expect(screen.queryByTestId('processing-content').textContent).toContain('Processing...');
         await screen.findByTestId('error-content', {}, {'timeout': 2000});
     });
@@ -107,7 +127,12 @@ describe('CustomersListPage Component test', () => {
             }),
         );
 
-        render(<CustomersListPage />);
+        const mockRouter = {
+            pathname: '',
+            query: {}
+        }
+
+        render(<CustomersListPage router={mockRouter}/>)
         await screen.findByTestId('success-content');
 
         expect(screen.queryByTestId('home-link').getAttribute("href")).toBe('/');
@@ -147,7 +172,12 @@ describe('CustomersListPage Component test', () => {
             }),
         );
 
-        render(<CustomersListPage />)
+        const mockRouter = {
+            pathname: '',
+            query: {}
+        }
+
+        render(<CustomersListPage router={mockRouter}/>)
         await screen.findByTestId('success-content');
         expect(listCustomersCount).toBe(1);
 
@@ -185,7 +215,12 @@ describe('CustomersListPage Component test', () => {
             }),
         );
 
-        render(<CustomersListPage />)
+        const mockRouter = {
+            pathname: '',
+            query: {}
+        }
+
+        render(<CustomersListPage router={mockRouter}/>)
         await screen.findByTestId('success-content');
         
         fireEvent.click(screen.getAllByTestId("delete-button")[0]);
