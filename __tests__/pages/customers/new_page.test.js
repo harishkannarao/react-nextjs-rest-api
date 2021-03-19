@@ -27,19 +27,7 @@ describe('NewCustomerPage Component test', () => {
         render(<NewCustomerPage router={mockRouter} />);
         expect(screen.queryByTestId('home-link').getAttribute("href")).toBe('/');
         expect(screen.queryByTestId('list-customers-link').getAttribute("href")).toBe('/customers/list');
-    });
-
-    test('cancel button', async () => {
-        var redirectUrl = null;
-        const mockRouter = {
-            push: function(url) {
-                redirectUrl = url;
-                return;
-            }
-        }
-        render(<NewCustomerPage router={mockRouter} />);
-        fireEvent.click(screen.getByTestId("cancel-button"));
-        expect(redirectUrl).toBe('/customers/list/');
+        expect(screen.queryByTestId('cancel-button').getAttribute("href")).toBe('/customers/list');
     });
 
     test('new customer creation', async () => {

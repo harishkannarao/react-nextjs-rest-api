@@ -15,12 +15,6 @@ export class NewCustomerPage extends React.Component {
         };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
-        this.handleButtonLinkClick = this.handleButtonLinkClick.bind(this);
-    }
-
-    handleButtonLinkClick(event) {
-        event.preventDefault();
-        this.props.router.push(event.target.getAttribute('data-href'));
     }
 
     handleInputChange(event) {
@@ -94,8 +88,8 @@ export class NewCustomerPage extends React.Component {
                             onChange={this.handleInputChange} />
                     </label>
                     <br />
-                    <input data-testid="submit-button" type="submit" value="Submit" />
-                    <input data-testid="cancel-button" type="button" data-href="/customers/list/" onClick={this.handleButtonLinkClick} value="Cancel" />
+                    <input className="btn btn-primary" data-testid="submit-button" type="submit" value="Submit" />
+                    <Link href="/customers/list/"><a className="btn btn-secondary" data-testid="cancel-button">Cancel</a></Link>
                 </form>
             </div>
         );

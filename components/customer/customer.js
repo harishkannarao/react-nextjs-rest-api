@@ -23,7 +23,7 @@ export function CustomerList(props) {
                         pathname: props.router.pathname,
                         query: props.router.query,
                         hash: 'customer-table-bottom',
-                    }}><a data-testid='go-to-bottom-link'>Go to Bottom</a></Link>
+                    }}><a className="btn btn-primary" data-testid='go-to-bottom-link'>Go to Bottom</a></Link>
                     <table>
                         <thead>
                             <tr>
@@ -46,7 +46,7 @@ export function CustomerList(props) {
                         pathname: props.router.pathname,
                         query: props.router.query,
                         hash: 'customer-table-top',
-                    }}><a data-testid='go-to-top-link'>Go to Top</a></Link>
+                    }}><a className="btn btn-primary" data-testid='go-to-top-link'>Go to Top</a></Link>
                 </div>
             )
     )
