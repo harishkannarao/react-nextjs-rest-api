@@ -9,12 +9,32 @@ export class CustomersListPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            inputFirstName: '',
             error: null,
             isProcessing: false,
             data: []
         };
         this.handleDeleteCustomer = this.handleDeleteCustomer.bind(this);
         this.errorHandler = this.errorHandler.bind(this);
+        this.handleFirstNameChange = this.handleFirstNameChange.bind(this);
+    }
+
+    handleFirstNameChange(event) {
+        event.preventDefault();
+        this.setState({
+            'inputFirstName': event.target.value
+        });
+        const query = this.props.router.query;
+        if (event.target.value != '') {
+            query['firstName'] = event.target.value;
+        } else {
+            delete query['firstName'];
+        }
+        const url = {
+            'pathname': this.props.router.pathname,
+            'query': query
+        }
+        this.props.router.push(url, undefined, { shallow: true });
     }
 
     errorHandler(httpError) {
@@ -32,7 +52,7 @@ export class CustomersListPage extends React.Component {
         const successHandler = (result) => {
             this.fetchData();
         }
-        const data = {'id': Number(event.target.getAttribute('data-id'))}
+        const data = { 'id': Number(event.target.getAttribute('data-id')) }
         deleteCustomer(data, successHandler, this.errorHandler)
     }
 
@@ -72,8 +92,14 @@ export class CustomersListPage extends React.Component {
                 </h3>
                 {
                     !this.state.isProcessing && this.state.error &&
-                        <div data-testid="error-content">"An error has occurred: " + {JSON.stringify(this.state.error.response)}</div>
+                    <div data-testid="error-content">"An error has occurred: " + {JSON.stringify(this.state.error.response)}</div>
                 }
+                <label>
+                    First Name:
+                        <input data-testid="input-first-name" name="inputFirstName" type="text"
+                        value={this.state.inputFirstName}
+                        onChange={this.handleFirstNameChange} />
+                </label>
                 <CustomerList router={this.props.router} isProcessing={this.state.isProcessing} handleDeleteCustomer={this.handleDeleteCustomer} data={this.state.data} />
             </div>
         );
