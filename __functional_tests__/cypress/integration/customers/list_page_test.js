@@ -97,4 +97,26 @@ describe('Test Customer List Page', () => {
             expect(reqJson.id).to.equal(2);
         });
     });
+
+    it('tests jump to bottom and top', () => {
+        cy.intercept(Cypress.env('CUSTOMER_API_BASE_URL') + '/customers',
+            {
+                statusCode: 200,
+                delay: 0,
+                body: []
+            }
+        )
+        
+        cy.visit("/customers/list/");
+
+        cy.get('[data-testid="processing-content"]').should('not.exist');
+
+        cy.get('[data-testid="go-to-bottom-link"]').click();
+
+        cy.hash().should('eq', '#customer-table-bottom');
+
+        cy.get('[data-testid="go-to-top-link"]').click();
+
+        cy.hash().should('eq', '#customer-table-top');
+    });
 });
