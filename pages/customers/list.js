@@ -29,17 +29,14 @@ export class CustomersListPage extends React.Component {
         this.setState({
             'inputFirstName': event.target.value,
             firstNameTypingTimeout: setTimeout(() => {
-                this.performFirstNameChange(event);
+                this.fetchData(event.target.value.trim());
             }, 500)
         });
-    }
-
-    performFirstNameChange(event) {
         const query = this.props.router.query;
-        if (event.target.value.trim() != '') {
-            query['firstName'] = event.target.value;
-        } else {
+        if (event.target.value.trim() == '') {
             delete query['firstName'];
+        } else {
+            query['firstName'] = event.target.value;
         }
         const url = {
             'pathname': this.props.router.pathname,
@@ -67,7 +64,7 @@ export class CustomersListPage extends React.Component {
         deleteCustomer(data, successHandler, this.errorHandler)
     }
 
-    fetchData() {
+    fetchData(firstName) {
         this.setState({
             isProcessing: true
         });
@@ -78,17 +75,17 @@ export class CustomersListPage extends React.Component {
                 error: null,
             });
         }
-        listCustomers(successHandler, this.errorHandler);
+        listCustomers(firstName, successHandler, this.errorHandler);
     }
 
     componentDidMount() {
-        if (getParameterByName("firstName") != null) {
+        var firstName = getParameterByName("firstName");
+        if (firstName != null) {
             this.setState({
-                inputFirstName: getParameterByName("firstName")
+                'inputFirstName': firstName
             })
         }
-        console.log(getParameterByName("firstName"));
-        this.fetchData();
+        this.fetchData(firstName);
     }
 
     render() {
