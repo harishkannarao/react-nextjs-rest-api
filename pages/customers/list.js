@@ -10,6 +10,7 @@ export class CustomersListPage extends React.Component {
         super(props);
         this.state = {
             inputFirstName: '',
+            firstNameTypingTimeout: null,
             error: null,
             isProcessing: false,
             data: []
@@ -21,9 +22,18 @@ export class CustomersListPage extends React.Component {
 
     handleFirstNameChange(event) {
         event.preventDefault();
+        if (this.state.firstNameTypingTimeout) {
+            clearTimeout(this.state.firstNameTypingTimeout);
+        }
         this.setState({
-            'inputFirstName': event.target.value
+            'inputFirstName': event.target.value,
+            firstNameTypingTimeout: setTimeout(() => {
+                this.performFirstNameChange(event);
+            }, 500)
         });
+    }
+
+    performFirstNameChange(event) {
         const query = this.props.router.query;
         if (event.target.value.trim() != '') {
             query['firstName'] = event.target.value;
