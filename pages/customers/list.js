@@ -3,6 +3,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { withRouter } from 'next/router'
 import { listCustomers, deleteCustomer } from "../../components/common/customer";
+import { getParameterByName } from "../../components/common/query_param"
 import { CustomerList } from "../../components/customer/customer";
 
 export class CustomersListPage extends React.Component {
@@ -81,6 +82,12 @@ export class CustomersListPage extends React.Component {
     }
 
     componentDidMount() {
+        if (getParameterByName("firstName") != null) {
+            this.setState({
+                inputFirstName: getParameterByName("firstName")
+            })
+        }
+        console.log(getParameterByName("firstName"));
         this.fetchData();
     }
 
