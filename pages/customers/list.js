@@ -25,7 +25,7 @@ export class CustomersListPage extends React.Component {
             'inputFirstName': event.target.value
         });
         const query = this.props.router.query;
-        if (event.target.value != '') {
+        if (event.target.value.trim() != '') {
             query['firstName'] = event.target.value;
         } else {
             delete query['firstName'];
