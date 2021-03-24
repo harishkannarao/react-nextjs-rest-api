@@ -19,6 +19,7 @@ export class CustomersListPage extends React.Component {
         this.handleDeleteCustomer = this.handleDeleteCustomer.bind(this);
         this.errorHandler = this.errorHandler.bind(this);
         this.handleFirstNameChange = this.handleFirstNameChange.bind(this);
+        this.fetchData = this.fetchData.bind(this);
     }
 
     handleFirstNameChange(event) {
@@ -29,7 +30,7 @@ export class CustomersListPage extends React.Component {
         this.setState({
             'inputFirstName': event.target.value,
             firstNameTypingTimeout: setTimeout(() => {
-                this.fetchData(event.target.value.trim());
+                this.fetchData();
             }, 500)
         });
         const query = this.props.router.query;
@@ -75,7 +76,11 @@ export class CustomersListPage extends React.Component {
                 error: null,
             });
         }
-        listCustomers(firstName, successHandler, this.errorHandler);
+        var resolvedFirstName = firstName;
+        if (resolvedFirstName == null) {
+            resolvedFirstName = this.state.inputFirstName.trim();
+        }
+        listCustomers(resolvedFirstName, successHandler, this.errorHandler);
     }
 
     componentDidMount() {
