@@ -40,7 +40,7 @@ describe('CustomersListPage Component test', () => {
         expect(screen.getByTestId('input-first-name').getAttribute('value')).toBe('test-first-name');
     });
 
-    test('display customers filtered by first name from query', async () => { 
+    test('display customers filtered by first name from query', async () => {
         window.location = {
             href: 'https://www.example.com?firstName=test-first-name',
         };
@@ -63,7 +63,7 @@ describe('CustomersListPage Component test', () => {
                 )
             }),
         );
-        
+
         render(<CustomersListPage router={createMockRouter()} />);
 
         await screen.findByTestId('success-content');
@@ -111,20 +111,74 @@ describe('CustomersListPage Component test', () => {
     });
 
     test('filters customers by first name', async () => {
-        expect(true).toBe(false);
+        var callCount = 0;
+        var receivedFirstName = null;
+        server.use(
+            rest.get(process.env.NEXT_PUBLIC_CUSTOMER_API_BASE_URL + "/customers", (req, res, ctx) => {
+                callCount += 1;
+                receivedFirstName = req.url.searchParams.get('firstName');
+                return res(
+                    ctx.status(200),
+                    ctx.json([]),
+                )
+            }),
+        );
+
+        render(<CustomersListPage router={createMockRouter()} />);
+
+        await screen.findByTestId('success-content');
+
+        await waitFor(() => expect(callCount).toBe(1));
+        await waitFor(() => expect(receivedFirstName).toBeNull());
+
+        fireEvent.change(screen.getByTestId("input-first-name"), { target: { value: 'test-first-name' } });
+
+        await screen.findByTestId('processing-content');
+
+        await screen.findByTestId('success-content');
+
+        await waitFor(() => expect(callCount).toBe(2));
+        await waitFor(() => expect(receivedFirstName).toBe('test-first-name'));
     })
 
     test('does not filter customers by first name given empty input', async () => {
-        expect(true).toBe(false);
+        var callCount = 0;
+        var receivedFirstName = null;
+        server.use(
+            rest.get(process.env.NEXT_PUBLIC_CUSTOMER_API_BASE_URL + "/customers", (req, res, ctx) => {
+                callCount += 1;
+                receivedFirstName = req.url.searchParams.get('firstName');
+                return res(
+                    ctx.status(200),
+                    ctx.json([]),
+                )
+            }),
+        );
+
+        render(<CustomersListPage router={createMockRouter()} />);
+
+        await screen.findByTestId('success-content');
+
+        await waitFor(() => expect(callCount).toBe(1));
+        await waitFor(() => expect(receivedFirstName).toBeNull());
+
+        fireEvent.change(screen.getByTestId("input-first-name"), { target: { value: '   ' } });
+
+        await screen.findByTestId('processing-content');
+
+        await screen.findByTestId('success-content');
+
+        await waitFor(() => expect(callCount).toBe(2));
+        await waitFor(() => expect(receivedFirstName).toBeNull());
     })
 
-    test('update url on change of first name', async () => {
-        expect(true).toBe(false);
-    })
+    // test('update url on change of first name', async () => {
+    //     expect(true).toBe(false);
+    // })
 
-    test('removal of first name from url given empty input', async () => {
-        expect(true).toBe(false);
-    })
+    // test('removal of first name from url given empty input', async () => {
+    //     expect(true).toBe(false);
+    // })
 
     test('displays empty customers', async () => {
         server.use(
