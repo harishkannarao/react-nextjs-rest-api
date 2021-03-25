@@ -2,6 +2,7 @@ import React from 'react'
 import { render, fireEvent, waitFor, waitForElementToBeRemoved, screen } from '@testing-library/react'
 import { server } from '../../server'
 import { rest } from 'msw'
+import { createMockRouter } from "../../mock_router";
 
 import { NewCustomerPage } from "../../../pages/customers/new";
 
@@ -18,11 +19,10 @@ describe('NewCustomerPage Component test', () => {
 
     test('navigation links', async () => {
         var redirectUrl = null;
-        const mockRouter = {
-            push: function(url) {
-                redirectUrl = url;
-                return;
-            }
+        const mockRouter = createMockRouter()
+        mockRouter.push = function(url, as, options) {
+            redirectUrl = url;
+            return;
         }
         render(<NewCustomerPage router={mockRouter} />);
         expect(screen.queryByTestId('home-link').getAttribute("href")).toBe('/');
@@ -44,11 +44,10 @@ describe('NewCustomerPage Component test', () => {
         );
 
         var redirectUrl = null;
-        const mockRouter = {
-            push: function(url) {
-                redirectUrl = url;
-                return;
-            }
+        const mockRouter = createMockRouter()
+        mockRouter.push = function(url, as, options) {
+            redirectUrl = url;
+            return;
         }
         render(<NewCustomerPage router={mockRouter} />);
         expect(screen.queryByTestId('first-name').getAttribute("value")).toBe('');
@@ -79,13 +78,8 @@ describe('NewCustomerPage Component test', () => {
                 )
             }),
         );
-        const mockRouter = {
-            push: function(url) {
-                return;
-            }
-        }
 
-        render(<NewCustomerPage router={mockRouter} />);
+        render(<NewCustomerPage router={createMockRouter()} />);
 
         fireEvent.click(screen.getByTestId("submit-button"));
 
