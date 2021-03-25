@@ -6,6 +6,44 @@ import { rest } from 'msw'
 import { CustomersListPage } from "../../../pages/customers/list";
 
 describe('CustomersListPage Component test', () => {
+    const { location } = window;
+
+    beforeEach(() => {
+        delete window.location;
+        window.location = {
+            href: 'https://www.example.com',
+        };
+    });
+
+    afterEach(() => {
+        window.location = location;
+    });
+
+    test('prefilling firstName search from query param', async () => {
+
+        window.location = {
+            href: 'https://www.example.com?firstName=test-first-name',
+        };
+
+        server.use(
+            rest.get(process.env.NEXT_PUBLIC_CUSTOMER_API_BASE_URL + "/customers", (req, res, ctx) => {
+                return res(
+                    ctx.status(200),
+                    ctx.json([]),
+                )
+            }),
+        );
+
+        const mockRouter = {
+            pathname: '',
+            query: {}
+        }
+
+        render(<CustomersListPage router={mockRouter} />);
+        await screen.findByTestId('success-content');
+        expect(screen.getByTestId('input-first-name').getAttribute('value')).toBe('test-first-name');
+    });
+
     test('displays multiple customers from api', async () => {
         const apiUrl = process.env.NEXT_PUBLIC_CUSTOMER_API_BASE_URL + "/customers"
         const apiResponse = [
@@ -34,7 +72,7 @@ describe('CustomersListPage Component test', () => {
             query: {}
         }
 
-        render(<CustomersListPage router={mockRouter}/>)
+        render(<CustomersListPage router={mockRouter} />)
         await screen.findByTestId('success-content');
 
         expect(screen.getAllByTestId('id')[0].textContent).toBe('1');
@@ -61,7 +99,7 @@ describe('CustomersListPage Component test', () => {
             query: {}
         }
 
-        render(<CustomersListPage router={mockRouter}/>)
+        render(<CustomersListPage router={mockRouter} />)
         await screen.findByTestId('success-content');
         expect(screen.queryByTestId('id')).toBeNull();
     });
@@ -85,7 +123,7 @@ describe('CustomersListPage Component test', () => {
             query: {}
         }
 
-        render(<CustomersListPage router={mockRouter}/>)
+        render(<CustomersListPage router={mockRouter} />)
         await screen.findByTestId('error-content');
         expect(screen.queryByTestId('error-content').textContent).toContain('unit-test-error');
         expect(screen.queryByTestId('error-content').textContent).toContain('Internal Server Error');
@@ -111,9 +149,9 @@ describe('CustomersListPage Component test', () => {
             query: {}
         }
 
-        render(<CustomersListPage router={mockRouter}/>)
+        render(<CustomersListPage router={mockRouter} />)
         expect(screen.queryByTestId('processing-content').textContent).toContain('Processing...');
-        await screen.findByTestId('error-content', {}, {'timeout': 2000});
+        await screen.findByTestId('error-content', {}, { 'timeout': 2000 });
     });
 
     test('displays navigation links correctly', async () => {
@@ -132,7 +170,7 @@ describe('CustomersListPage Component test', () => {
             query: {}
         }
 
-        render(<CustomersListPage router={mockRouter}/>)
+        render(<CustomersListPage router={mockRouter} />)
         await screen.findByTestId('success-content');
 
         expect(screen.queryByTestId('home-link').getAttribute("href")).toBe('/');
@@ -177,7 +215,7 @@ describe('CustomersListPage Component test', () => {
             query: {}
         }
 
-        render(<CustomersListPage router={mockRouter}/>)
+        render(<CustomersListPage router={mockRouter} />)
         await screen.findByTestId('success-content');
         expect(listCustomersCount).toBe(1);
 
@@ -210,7 +248,7 @@ describe('CustomersListPage Component test', () => {
             rest.delete(process.env.NEXT_PUBLIC_CUSTOMER_API_BASE_URL + "/customers", (req, res, ctx) => {
                 return res(
                     ctx.status(500),
-                    ctx.json({'message': 'unit-test-error'}),
+                    ctx.json({ 'message': 'unit-test-error' }),
                 )
             }),
         );
@@ -220,11 +258,11 @@ describe('CustomersListPage Component test', () => {
             query: {}
         }
 
-        render(<CustomersListPage router={mockRouter}/>)
+        render(<CustomersListPage router={mockRouter} />)
         await screen.findByTestId('success-content');
-        
+
         fireEvent.click(screen.getAllByTestId("delete-button")[0]);
-        
+
         await screen.findByTestId('error-content');
         expect(screen.queryByTestId('error-content').textContent).toContain('unit-test-error');
 
