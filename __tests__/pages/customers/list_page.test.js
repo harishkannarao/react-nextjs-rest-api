@@ -94,8 +94,10 @@ describe('CustomersListPage Component test', () => {
                 lastName: 'test-last-name-2'
             }
         ]
+        var receivedRequest = null;
         server.use(
             rest.get(apiUrl, (req, res, ctx) => {
+                receivedRequest = req;
                 return res(
                     ctx.status(200),
                     ctx.json(apiResponse),
@@ -118,6 +120,8 @@ describe('CustomersListPage Component test', () => {
         expect(screen.getAllByTestId('id')[1].textContent).toBe('2');
         expect(screen.getAllByTestId('firstName')[1].textContent).toBe('test-first-name-2');
         expect(screen.getAllByTestId('lastName')[1].textContent).toBe('test-last-name-2');
+
+        expect(Array.from(receivedRequest.url.searchParams.entries())).toHaveLength(0);
     });
 
     test('displays empty customers', async () => {
