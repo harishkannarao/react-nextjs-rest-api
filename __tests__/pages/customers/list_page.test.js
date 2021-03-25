@@ -110,25 +110,21 @@ describe('CustomersListPage Component test', () => {
         expect(Array.from(receivedRequest.url.searchParams.entries())).toHaveLength(0);
     });
 
-    // test('filters customers by first name', async () => {
-    //     expect(true).toBe(false);
-    // })
+    test('filters customers by first name', async () => {
+        expect(true).toBe(false);
+    })
 
-    // test('filters customers by first name after deletion', async () => {
-    //     expect(true).toBe(false);
-    // })
+    test('does not filter customers by first name given empty input', async () => {
+        expect(true).toBe(false);
+    })
 
-    // test('does not filter customers by first name given empty input', async () => {
-    //     expect(true).toBe(false);
-    // })
+    test('update url on change of first name', async () => {
+        expect(true).toBe(false);
+    })
 
-    // test('update url on change of first name', async () => {
-    //     expect(true).toBe(false);
-    // })
-
-    // test('removal of first name from url given empty input', async () => {
-    //     expect(true).toBe(false);
-    // })
+    test('removal of first name from url given empty input', async () => {
+        expect(true).toBe(false);
+    })
 
     test('displays empty customers', async () => {
         server.use(
