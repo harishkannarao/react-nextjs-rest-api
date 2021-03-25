@@ -44,6 +44,42 @@ describe('CustomersListPage Component test', () => {
         expect(screen.getByTestId('input-first-name').getAttribute('value')).toBe('test-first-name');
     });
 
+    test('display customers filtered by first name from query', async () => { 
+        window.location = {
+            href: 'https://www.example.com?firstName=test-first-name',
+        };
+
+        var receivedFirstName = null;
+        server.use(
+            rest.get(process.env.NEXT_PUBLIC_CUSTOMER_API_BASE_URL + "/customers", (req, res, ctx) => {
+                receivedFirstName = req.url.searchParams.get('firstName');
+                return res(
+                    ctx.status(200),
+                    ctx.json(
+                        [
+                            {
+                                id: 1,
+                                firstName: 'test-first-name',
+                                lastName: 'test-last-name'
+                            }
+                        ]
+                    ),
+                )
+            }),
+        );
+
+        const mockRouter = {
+            pathname: '',
+            query: {}
+        }
+
+        render(<CustomersListPage router={mockRouter} />);
+
+        await screen.findByTestId('success-content');
+        expect(screen.getAllByTestId('id')[0].textContent).toBe('1');
+        expect(receivedFirstName).toBe('test-first-name');
+    })
+
     test('displays multiple customers from api', async () => {
         const apiUrl = process.env.NEXT_PUBLIC_CUSTOMER_API_BASE_URL + "/customers"
         const apiResponse = [
