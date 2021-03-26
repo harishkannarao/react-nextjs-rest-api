@@ -14,6 +14,7 @@ export default function MyApp({ Component, pageProps }) {
             </Head>
             <h6>Common Header</h6>
             <h6>Pathname: {router.pathname}</h6>
+            <h6>Query: {JSON.stringify(router.query)}</h6>
             <Component {...pageProps} />
             <h6>Common Footer</h6>
         </>
