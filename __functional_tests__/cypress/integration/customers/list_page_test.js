@@ -120,7 +120,7 @@ describe('Test Customer List Page', () => {
         cy.hash().should('eq', '#customer-table-top');
     });
 
-    it.only('prefills first name, title and search customer from query param', () => {
+    it('prefills first name, title and search customer from query param', () => {
         cy.intercept('GET', Cypress.env('CUSTOMER_API_BASE_URL') + '/customers', (req) => {
             req.alias = 'listCustomers';
             req.reply(
@@ -143,5 +143,46 @@ describe('Test Customer List Page', () => {
         });
 
         cy.title().should('eq', 'test-first-name :: List - Customers');
+    })
+
+    it('changing first name should change title, query param and search result', () => {
+        var requestCount = 0;
+        cy.intercept('GET', Cypress.env('CUSTOMER_API_BASE_URL') + '/customers', (req) => {
+            req.alias = 'listCustomers-' + requestCount;
+            requestCount += 1;
+            req.reply(
+                {
+                    statusCode: 200,
+                    delay: 0,
+                    body: []
+                }
+            );
+        });
+        
+        cy.visit("/customers/list/");
+
+        cy.get('[data-testid="success-content"]').should('exist');
+
+        cy.wait('@listCustomers-0');
+
+        cy.get('[data-testid="input-first-name"]').clear().type('test-first-name');
+
+        cy.title().should('eq', 'test-first-name :: List - Customers');
+
+        cy.url().should('contain', 'firstName=test-first-name');
+
+        cy.wait('@listCustomers-1').then((interception) => {
+            expect(interception.request.url).to.contain('firstName=test-first-name');
+        });
+
+        cy.get('[data-testid="input-first-name"]').clear().type(' ');
+
+        cy.title().should('eq', 'List - Customers');
+
+        cy.url().should('not.contain', 'firstName');
+
+        cy.wait('@listCustomers-2').then((interception) => {
+            expect(interception.request.url).not.to.contain('firstName');
+        });
     })
 });
