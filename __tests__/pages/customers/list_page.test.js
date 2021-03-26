@@ -110,7 +110,7 @@ describe('CustomersListPage Component test', () => {
         expect(Array.from(receivedRequest.url.searchParams.entries())).toHaveLength(0);
     });
 
-    test('filters customers by first name', async () => {
+    test('filters customers and update query on change of first name search', async () => {
         var callCount = 0;
         var receivedFirstName = null;
         server.use(
@@ -124,7 +124,23 @@ describe('CustomersListPage Component test', () => {
             }),
         );
 
-        render(<CustomersListPage router={createMockRouter()} />);
+        const mockRouter = createMockRouter()
+        let receivedUrl = null;
+        let receivedAs = null;
+        let receivedOptions = null;
+        mockRouter.push = function (url, as, options) {
+            receivedUrl = url;
+            receivedAs = as;
+            receivedOptions = options;
+            return;
+        }
+        mockRouter.pathname = 'test-path-name';
+        mockRouter.query = {
+            firstName: 'test-old-first-name',
+            someOtherQuery: 'test-query'
+        };
+
+        render(<CustomersListPage router={mockRouter} />);
 
         await screen.findByTestId('success-content');
 
@@ -139,9 +155,15 @@ describe('CustomersListPage Component test', () => {
 
         await waitFor(() => expect(callCount).toBe(2));
         await waitFor(() => expect(receivedFirstName).toBe('test-first-name'));
+
+        expect(receivedUrl.pathname).toBe("test-path-name");
+        expect(receivedUrl.query.firstName).toBe("test-first-name");
+        expect(receivedUrl.query.someOtherQuery).toBe("test-query");
+        expect(receivedAs).toBeUndefined();
+        expect(receivedOptions.shallow).toBe(true);
     })
 
-    test('does not filter customers by first name given empty input', async () => {
+    test('does not filter customers by first name given empty input and removes first name from query', async () => {
         var callCount = 0;
         var receivedFirstName = null;
         server.use(
@@ -155,7 +177,23 @@ describe('CustomersListPage Component test', () => {
             }),
         );
 
-        render(<CustomersListPage router={createMockRouter()} />);
+        const mockRouter = createMockRouter()
+        let receivedUrl = null;
+        let receivedAs = null;
+        let receivedOptions = null;
+        mockRouter.push = function (url, as, options) {
+            receivedUrl = url;
+            receivedAs = as;
+            receivedOptions = options;
+            return;
+        }
+        mockRouter.pathname = 'test-path-name';
+        mockRouter.query = {
+            firstName: 'test-old-first-name',
+            someOtherQuery: 'test-query'
+        };
+
+        render(<CustomersListPage router={mockRouter} />);
 
         await screen.findByTestId('success-content');
 
@@ -170,15 +208,13 @@ describe('CustomersListPage Component test', () => {
 
         await waitFor(() => expect(callCount).toBe(2));
         await waitFor(() => expect(receivedFirstName).toBeNull());
+
+        expect(receivedUrl.pathname).toBe("test-path-name");
+        expect(receivedUrl.query.firstName).toBeUndefined();
+        expect(receivedUrl.query.someOtherQuery).toBe("test-query");
+        expect(receivedAs).toBeUndefined();
+        expect(receivedOptions.shallow).toBe(true);
     })
-
-    // test('update url on change of first name', async () => {
-    //     expect(true).toBe(false);
-    // })
-
-    // test('removal of first name from url given empty input', async () => {
-    //     expect(true).toBe(false);
-    // })
 
     test('displays empty customers', async () => {
         server.use(
