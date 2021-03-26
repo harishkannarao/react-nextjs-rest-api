@@ -94,10 +94,14 @@ export class CustomersListPage extends React.Component {
     }
 
     render() {
+        var title = 'List - Customers';
+        if (this.state.inputFirstName.trim() != '') {
+            title = this.state.inputFirstName + " :: " + title;
+        }
         return (
             <div>
                 <Head>
-                    <title>List - Customers</title>
+                    <title>{title}</title>
                 </Head>
                 <h3>
                     <Link href="/">
