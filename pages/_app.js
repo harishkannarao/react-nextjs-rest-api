@@ -12,11 +12,21 @@ export default function MyApp({ Component, pageProps }) {
                 <meta charSet="utf-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
             </Head>
-            <h6>Common Header</h6>
-            <h6>Pathname: {router.pathname}</h6>
-            <h6>Query: {JSON.stringify(router.query)}</h6>
+            <header className="bg-light text-center text-lg-start">
+                Common Header
+            </header>
             <Component {...pageProps} />
-            <h6>Common Footer</h6>
+            <footer className="bg-light text-center text-lg-start">
+                <p>Common Footer</p>
+                <p>
+                    Pathname: {router.pathname}
+                    <br />
+                    Query: {JSON.stringify(router.query)}
+                    <br />
+                    Basepath: {router.basePath}
+                </p>
+            </footer>
+            <h6></h6>
         </>
     )
 }
