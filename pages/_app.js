@@ -10,7 +10,9 @@ export default function MyApp({ Component, pageProps }) {
                 <meta charSet="utf-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
             </Head>
+            <h6>Common Header</h6>
             <Component {...pageProps} />
+            <h6>Common Footer</h6>
         </>
     )
 }
