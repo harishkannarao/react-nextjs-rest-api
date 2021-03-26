@@ -62,3 +62,7 @@ or
     export CYPRESS_BASE_URL=http://localhost:4000/my-app
 
     ./ci-build.sh
+
+### List the cypress html reports with failures
+
+    grep -r -l '"state": "failed"' cypress-report | sed -E 's/.json/.html/g'
