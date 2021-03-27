@@ -39,6 +39,12 @@ jobs:
       with:
         name: cypress-report
         path: cypress-report/report
+    - name: 'CI Generate Artifact Command'
+      timeout-minutes: 20
+      env:
+        NEXT_PUBLIC_CUSTOMER_API_BASE_URL: 'https://docker-http-app-development.harishkannarao.com/'
+      run: |
+        ./ci-generate-artifact.sh
     - name: 'CI Push to s3 Command'
       timeout-minutes: 20
       env:
