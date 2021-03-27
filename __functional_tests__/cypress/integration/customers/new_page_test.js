@@ -70,7 +70,7 @@ describe('Test New Customer Page', () => {
         cy.get('[data-testid="submitting-content"]').should('exist');
         cy.get('[data-testid="submitting-content"]').should('not.exist');
 
-        cy.get('[data-testid="error-content"]').should('contain', 'unit-test-error');
+        cy.get('[data-testid="error-content"]').should('contain', 'unit-test-error-1');
         cy.get('[data-testid="error-content"]').should('contain', 'Internal Server Error');
     });
 });

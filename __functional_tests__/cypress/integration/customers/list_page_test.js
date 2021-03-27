@@ -142,7 +142,7 @@ describe('Test Customer List Page', () => {
             expect(interception.request.url).to.contain('firstName=test-first-name');
         });
 
-        cy.title().should('eq', 'test-first-name :: List - Customers');
+        cy.title().should('eq', 'test-first-name :: List - Customers ---');
     })
 
     it('changing first name should change title, query param and search result', () => {
