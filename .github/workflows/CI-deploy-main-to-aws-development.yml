@@ -23,6 +23,10 @@ jobs:
       timeout-minutes: 20
       run: |
         ./ci-build.sh
+    - name: 'CI Cypress Report Command'
+      if: ${{ always() }}
+      run: |
+        ./ci-cypress-report.sh
     - name: Archive jest test results
       uses: actions/upload-artifact@v1
       if: ${{ always() }}
@@ -33,8 +37,8 @@ jobs:
       uses: actions/upload-artifact@v1
       if: ${{ always() }}
       with:
-        name: cypress-report-mochawesome-report
-        path: cypress-report/mochawesome-report
+        name: cypress-report
+        path: cypress-report/report
     - name: 'CI Push to s3 Command'
       timeout-minutes: 20
       env:

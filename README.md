@@ -63,6 +63,6 @@ or
 
     ./ci-build.sh
 
-### List the cypress html reports with failures
+### Generate full cypress html report
 
-    grep -r -l '"state": "failed"' cypress-report | sed -E 's/.json/.html/g'
+    npm run mochawesome-merge && npm run marge
