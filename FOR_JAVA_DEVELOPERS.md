@@ -35,7 +35,7 @@ There are no additional tools needed as it `NextJs` provides out of box support 
 
 ### Testing Stack
 
-###### Unit and Component Testing
+#### Unit and Component Testing
 
 Jest Library is a test runner tool with built in assertion library and retry utilities to test async behaviours of a ReactJs Web application.
 
@@ -55,7 +55,7 @@ Jest stack has very fast feedback time, however it was hard to test the bits in 
 |Testing Library|WebDriver (Selenium)|
 |MSW|WireMock|
 
-###### Functional Testing
+#### Functional Testing
 
 Cypress tool is a test runner tool with built in assertion library and implicit retry utilities to test any frontend Web application.
 
@@ -74,7 +74,7 @@ In essence, test as much as possible in a meaningful way with `Jest` and have jo
 |Mochawesome|Gradle or Maven Html Reporter|
 |serve and start-server-and-test|Spring Boot Test|
 
-###### Post Deployment Acceptance Testing
+#### Post Deployment Acceptance Testing
 
 To test an application in a deployed environment, `Cypress` will be most appropriate as its easier to test a deployed application. Also, there is built-in http client `cy.request()` which can perform http calls to set up test data or fixtures in the server side Http API.
 
