@@ -185,4 +185,25 @@ describe('Test Customer List Page', () => {
             expect(interception.request.url).not.to.contain('firstName');
         });
     })
+
+    it('display common header and footer information', () => {
+        cy.intercept('GET', Cypress.env('CUSTOMER_API_BASE_URL') + '/customers', (req) => {
+            req.reply(
+                {
+                    statusCode: 200,
+                    delay: 0,
+                    body: []
+                }
+            );
+        });
+        
+        cy.visit("/customers/list/?firstName=test-first-name");
+
+        cy.get('[data-testid="success-content"]').should('exist');
+
+        cy.get('[data-testid="common-header"]').should('have.text', 'Common Header');
+        cy.get('[data-testid="common-footer"]').should('have.text', 'Common Footer');
+        cy.get('[data-testid="footer-pathname"]').should('have.text', '/customers/list');
+        cy.get('[data-testid="footer-query"]').should('have.text', '{"firstName":"test-first-name"}');
+    })
 });

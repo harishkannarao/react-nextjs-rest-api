@@ -12,16 +12,16 @@ export default function MyApp({ Component, pageProps }) {
                 <meta charSet="utf-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
             </Head>
-            <header className="bg-light text-center text-lg-start">
+            <header data-testid="common-header" className="bg-light text-center text-lg-start">
                 Common Header
             </header>
             <Component {...pageProps} />
             <footer className="bg-light text-center text-lg-start">
-                <p>Common Footer</p>
+                <p data-testid="common-footer">Common Footer</p>
                 <p>
-                    Pathname: {router.pathname}
+                    Pathname: <span data-testid="footer-pathname">{router.pathname}</span>
                     <br />
-                    Query: {JSON.stringify(router.query)}
+                    Query: <span data-testid="footer-query">{JSON.stringify(router.query)}</span>
                     <br />
                     Basepath: {router.basePath}
                 </p>
