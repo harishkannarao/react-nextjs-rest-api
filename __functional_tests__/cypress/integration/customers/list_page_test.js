@@ -21,13 +21,13 @@ describe('Test Customer List Page', () => {
 
         cy.visit("/customers/list/");
 
-        cy.get('[data-testid="id"]').eq(0).should('have.text', '1');
-        cy.get('[data-testid="firstName"]').eq(0).should('have.text', 'test-first-name-1');
-        cy.get('[data-testid="lastName"]').eq(0).should('have.text', 'test-last-name-1');
+        cy.getByTestId("id").eq(0).should('have.text', '1');
+        cy.getByTestId("firstName").eq(0).should('have.text', 'test-first-name-1');
+        cy.getByTestId("lastName").eq(0).should('have.text', 'test-last-name-1');
 
-        cy.get('[data-testid="id"]').eq(1).should('have.text', '2');
-        cy.get('[data-testid="firstName"]').eq(1).should('have.text', 'test-first-name-2');
-        cy.get('[data-testid="lastName"]').eq(1).should('have.text', 'test-last-name-2');
+        cy.getByTestId("id").eq(1).should('have.text', '2');
+        cy.getByTestId("firstName").eq(1).should('have.text', 'test-first-name-2');
+        cy.getByTestId("lastName").eq(1).should('have.text', 'test-last-name-2');
     });
 
     it('Displays title', () => {
@@ -84,11 +84,11 @@ describe('Test Customer List Page', () => {
 
         cy.wait('@listCustomers-0');
 
-        cy.get('[data-testid="delete-button"]').eq(1).click();
+        cy.getByTestId("delete-button").eq(1).click();
 
-        cy.get('[data-testid="processing-content"]').should('exist');
+        cy.getByTestId("processing-content").should('exist');
 
-        cy.get('[data-testid="processing-content"]').should('not.exist');
+        cy.getByTestId("processing-content").should('not.exist');
 
         cy.wait('@listCustomers-1');
 
@@ -109,13 +109,13 @@ describe('Test Customer List Page', () => {
         
         cy.visit("/customers/list/");
 
-        cy.get('[data-testid="processing-content"]').should('not.exist');
+        cy.getByTestId("processing-content").should('not.exist');
 
-        cy.get('[data-testid="go-to-bottom-link"]').click();
+        cy.getByTestId("go-to-bottom-link").click();
 
         cy.hash().should('eq', '#customer-table-bottom');
 
-        cy.get('[data-testid="go-to-top-link"]').click();
+        cy.getByTestId("go-to-top-link").click();
 
         cy.hash().should('eq', '#customer-table-top');
     });
@@ -134,9 +134,9 @@ describe('Test Customer List Page', () => {
         
         cy.visit("/customers/list/?firstName=test-first-name");
 
-        cy.get('[data-testid="success-content"]').should('exist');
+        cy.getByTestId("success-content").should('exist');
 
-        cy.get('[data-testid="input-first-name"]').should('have.value', 'test-first-name');
+        cy.getByTestId("input-first-name").should('have.value', 'test-first-name');
 
         cy.wait('@listCustomers').then((interception) => {
             expect(interception.request.url).to.contain('firstName=test-first-name');
@@ -161,11 +161,11 @@ describe('Test Customer List Page', () => {
         
         cy.visit("/customers/list/");
 
-        cy.get('[data-testid="success-content"]').should('exist');
+        cy.getByTestId("success-content").should('exist');
 
         cy.wait('@listCustomers-0');
 
-        cy.get('[data-testid="input-first-name"]').clear().type('test-first-name');
+        cy.getByTestId("input-first-name").clear().type('test-first-name');
 
         cy.title().should('eq', 'test-first-name :: List - Customers');
 
@@ -175,7 +175,7 @@ describe('Test Customer List Page', () => {
             expect(interception.request.url).to.contain('firstName=test-first-name');
         });
 
-        cy.get('[data-testid="input-first-name"]').clear().type(' ');
+        cy.getByTestId("input-first-name").clear().type(' ');
 
         cy.title().should('eq', 'List - Customers');
 
@@ -199,11 +199,11 @@ describe('Test Customer List Page', () => {
         
         cy.visit("/customers/list/?firstName=test-first-name");
 
-        cy.get('[data-testid="success-content"]').should('exist');
+        cy.getByTestId("success-content").should('exist');
 
-        cy.get('[data-testid="common-header"]').should('have.text', 'Common Header');
-        cy.get('[data-testid="common-footer"]').should('have.text', 'Common Footer');
-        cy.get('[data-testid="footer-pathname"]').should('have.text', '/customers/list');
-        cy.get('[data-testid="footer-query"]').should('have.text', '{"firstName":"test-first-name"}');
+        cy.getByTestId("common-header").should('have.text', 'Common Header');
+        cy.getByTestId("common-footer").should('have.text', 'Common Footer');
+        cy.getByTestId("footer-pathname").should('have.text', '/customers/list');
+        cy.getByTestId("footer-query").should('have.text', '{"firstName":"test-first-name"}');
     })
 });

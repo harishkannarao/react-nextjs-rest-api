@@ -4,7 +4,7 @@ describe('Test Sample Page', () => {
         
         cy.title().should('eq', 'Sample')
 
-        cy.get('[data-testid="message"]')
+        cy.getByTestId("message")
             .should(($div) => {
                 expect($div).to.have.length(1)
                 expect($div[0]).to.have.text('This is a sample page')

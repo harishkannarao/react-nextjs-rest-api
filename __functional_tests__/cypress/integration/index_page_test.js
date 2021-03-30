@@ -4,7 +4,7 @@ describe('Test Index Page', () => {
 
         cy.title().should('eq', 'Next.js!!!');
 
-        cy.get('[data-testid="message"]')
+        cy.getByTestId("message")
             .should(($div) => {
                 expect($div).to.have.length(1)
                 expect($div[0]).to.have.text('Welcome to Next.js!!!')

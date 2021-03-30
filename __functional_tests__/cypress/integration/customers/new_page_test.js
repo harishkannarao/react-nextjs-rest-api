@@ -1,15 +1,15 @@
 describe('Test New Customer Page', () => {
     it('navigates links correctly', () => {
         cy.visit("/customers/new/");
-        cy.get('[data-testid="home-link"]').click();
+        cy.getByTestId("home-link").click();
         cy.title().should('eq', 'Next.js!!!');
 
         cy.visit("/customers/new/");
-        cy.get('[data-testid="list-customers-link"]').click();
+        cy.getByTestId("list-customers-link").click();
         cy.title().should('eq', 'List - Customers');
 
         cy.visit("/customers/new/");
-        cy.get('[data-testid="cancel-button"]').click();
+        cy.getByTestId("cancel-button").click();
         cy.title().should('eq', 'List - Customers');
     });
 
@@ -40,11 +40,11 @@ describe('Test New Customer Page', () => {
 
         cy.visit("/customers/new/");
 
-        cy.get('[data-testid="first-name"]').clear().type('test-first-name');
-        cy.get('[data-testid="last-name"]').clear().type('test-last-name');
-        cy.get('[data-testid="submit-button"]').click();
+        cy.getByTestId("first-name").clear().type('test-first-name');
+        cy.getByTestId("last-name").clear().type('test-last-name');
+        cy.getByTestId("submit-button").click();
 
-        cy.get('[data-testid="submitting-content"]').should('exist');
+        cy.getByTestId("submitting-content").should('exist');
 
         cy.wait('@createCustomer').then((interception) => {
             var reqJson = interception.request.body;
@@ -65,12 +65,12 @@ describe('Test New Customer Page', () => {
         );
 
         cy.visit("/customers/new/");
-        cy.get('[data-testid="submit-button"]').click();
+        cy.getByTestId("submit-button").click();
 
-        cy.get('[data-testid="submitting-content"]').should('exist');
-        cy.get('[data-testid="submitting-content"]').should('not.exist');
+        cy.getByTestId("submitting-content").should('exist');
+        cy.getByTestId("submitting-content").should('not.exist');
 
-        cy.get('[data-testid="error-content"]').should('contain', 'unit-test-error');
-        cy.get('[data-testid="error-content"]').should('contain', 'Internal Server Error');
+        cy.getByTestId("error-content").should('contain', 'unit-test-error');
+        cy.getByTestId("error-content").should('contain', 'Internal Server Error');
     });
 });
