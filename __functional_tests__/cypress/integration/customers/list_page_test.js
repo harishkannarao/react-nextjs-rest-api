@@ -186,7 +186,7 @@ describe('Test Customer List Page', () => {
         });
     })
 
-    it.only('display common header and footer information', () => {
+    it('display common header and footer information', () => {
         cy.intercept('GET', Cypress.env('CUSTOMER_API_BASE_URL') + '/customers', (req) => {
             req.reply(
                 {
