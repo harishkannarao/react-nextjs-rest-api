@@ -1,5 +1,6 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
+import { createMockRouter } from "../../mock_router";
 
 import { Customer, CustomerList } from "../../../components/customer/customer";
 
@@ -40,15 +41,10 @@ describe('CustomerList Component test', () => {
                 lastName: 'test-last-name-2'
             }
         ]
-        const mockRouter = {
-            pathname: '',
-            query: {}
-        }
-
         render(
             <CustomerList
                 data={customersData}
-                router={mockRouter}
+                router={createMockRouter()}
             />
         )
         expect(screen.getAllByTestId('id')[0].textContent).toBe('1');
@@ -62,10 +58,9 @@ describe('CustomerList Component test', () => {
 
     test('displays go to top and bottom links', async () => {
         const customersData = []
-        const mockRouter = {
-            pathname: 'test-pathname',
-            query: { test: 'value' }
-        }
+        const mockRouter = createMockRouter()
+        mockRouter.pathname = 'test-pathname';
+        mockRouter.query = { test: 'value' };
 
         const result = render(
             <CustomerList
