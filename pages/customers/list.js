@@ -93,6 +93,12 @@ export class CustomersListPage extends React.Component {
         this.fetchData(firstName);
     }
 
+    componentWillUnmount() {
+        if (this.state.firstNameTypingTimeout) {
+            clearTimeout(this.state.firstNameTypingTimeout);
+        }
+    }
+
     render() {
         var title = 'List - Customers';
         if (this.state.inputFirstName.trim() != '') {
