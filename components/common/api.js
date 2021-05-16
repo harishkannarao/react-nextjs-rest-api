@@ -1,19 +1,19 @@
 const axios = require('axios');
 
-export function executeGet(url, queryParams, successHandler, errorHandler) {
-    axios.get(url, {params: queryParams, timeout: 1000})
+export function executeGet(url, queryParams, successHandler, errorHandler, timeoutMillis = 1000) {
+    axios.get(url, {params: queryParams, timeout: timeoutMillis})
       .then(successHandler)
       .catch(errorHandler);
 };
 
-export function executePost(url, data, successHandler, errorHandler) {
-    axios.post(url, data, {timeout: 1000})
+export function executePost(url, data, successHandler, errorHandler, timeoutMillis = 1000) {
+    axios.post(url, data, {timeout: timeoutMillis})
       .then(successHandler)
       .catch(errorHandler);
 };
 
-export function executeDelete(url, data, successHandler, errorHandler) {
-    axios.delete(url, {data: data, timeout: 1000})
+export function executeDelete(url, data, successHandler, errorHandler, timeoutMillis = 1000) {
+    axios.delete(url, {data: data, timeout: timeoutMillis})
       .then(successHandler)
       .catch(errorHandler);
 };
