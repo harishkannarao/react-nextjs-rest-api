@@ -3,6 +3,7 @@ import Head from 'next/head'
 import { withRouter } from 'next/router'
 import Link from 'next/link'
 import { createCustomer } from '../../components/common/customer'
+import { DisplayError } from "../../components/error/error";
 
 export class NewCustomerPage extends React.Component {
     constructor(props) {
@@ -69,7 +70,7 @@ export class NewCustomerPage extends React.Component {
                             <div data-testid="submitting-content">Submitting...</div>
                         ) : (
                             this.state.error && (
-                                <div data-testid="error-content">"An error has occurred: " + {JSON.stringify(this.state.error.response)}</div>
+                                <DisplayError error={this.state.error} />
                             )
                         )
                 }

@@ -5,6 +5,7 @@ import { withRouter } from 'next/router'
 import { listCustomers, deleteCustomer } from "../../components/common/customer";
 import { getParameterByName } from "../../components/common/query_param"
 import { CustomerList } from "../../components/customer/customer";
+import { DisplayError } from "../../components/error/error";
 
 export class CustomersListPage extends React.Component {
     constructor(props) {
@@ -121,7 +122,7 @@ export class CustomersListPage extends React.Component {
                 </h3>
                 {
                     !this.state.isProcessing && this.state.error &&
-                    <div data-testid="error-content">"An error has occurred: " + {JSON.stringify(this.state.error.response)}</div>
+                    <DisplayError error={this.state.error} />
                 }
                 <label>
                     First Name:
