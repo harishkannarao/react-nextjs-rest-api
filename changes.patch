@@ -1,0 +1,219 @@
+diff --git a/.node-version b/.node-version
+new file mode 100644
+index 0000000..62df50f
+--- /dev/null
++++ b/.node-version
+@@ -0,0 +1 @@
++14.17.0
+diff --git a/__tests__/components/common/query_param.test.js b/__tests__/components/common/query_param.test.js
+new file mode 100644
+index 0000000..0781047
+--- /dev/null
++++ b/__tests__/components/common/query_param.test.js
+@@ -0,0 +1,18 @@
++import * as queryParamModule from "../../../components/common/query_param";
++
++describe('query param function test', () => {
++    test('returns query param from the url', async () => {
++        let result = queryParamModule.getParameterByName('testQuery', 'http://www.example.com/some_page?testQuery=testValue')
++        expect(result).toBe('testValue');
++    })
++
++    test('returns empty string from the url when query param is present', async () => {
++        let result = queryParamModule.getParameterByName('testQuery', 'http://www.example.com/some_page?testQuery')
++        expect(result).toBe('');
++    })
++
++    test('returns null when url does not contain the query param', async () => {
++        let result = queryParamModule.getParameterByName('testQuery', 'http://www.example.com/some_page')
++        expect(result).toBeNull();
++    })
++})
+\ No newline at end of file
+diff --git a/__tests__/pages/customers/list_page.test.js b/__tests__/pages/customers/list_page.test.js
+index efe3f47..84ecef4 100644
+--- a/__tests__/pages/customers/list_page.test.js
++++ b/__tests__/pages/customers/list_page.test.js
+@@ -3,28 +3,28 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+ import { server } from '../../server'
+ import { createMockRouter } from "../../mock_router";
+ import { rest } from 'msw'
++import * as queryParamModule from "../../../components/common/query_param"
+ 
+ import { CustomersListPage } from "../../../pages/customers/list";
+ 
+ describe('CustomersListPage Component test', () => {
+-    const { location } = window;
+-
+     beforeEach(() => {
+-        delete window.location;
+-        window.location = {
+-            href: 'https://www.example.com',
+-        };
++        jest.clearAllMocks();
++        queryParamModule.getParameterByName = jest.fn();
+     });
+ 
+     afterEach(() => {
+-        window.location = location;
++        jest.clearAllMocks();
+     });
+ 
+     test('prefilling firstName search from query param', async () => {
+-
+-        window.location = {
+-            href: 'https://www.example.com?firstName=test-first-name',
+-        };
++        queryParamModule.getParameterByName.mockImplementation((param) => {
++            if(param == 'firstName') {
++                return 'test-first-name';
++            } else {
++                throw new Error("Unexpected param: " + param);
++            }
++        });
+ 
+         server.use(
+             rest.get(process.env.NEXT_PUBLIC_CUSTOMER_API_BASE_URL + "/customers", (req, res, ctx) => {
+@@ -41,9 +41,13 @@ describe('CustomersListPage Component test', () => {
+     });
+ 
+     test('display customers filtered by first name from query', async () => {
+-        window.location = {
+-            href: 'https://www.example.com?firstName=test-first-name',
+-        };
++        queryParamModule.getParameterByName.mockImplementation((param) => {
++            if(param == 'firstName') {
++                return 'test-first-name';
++            } else {
++                throw new Error("Unexpected param: " + param);
++            }
++        });
+ 
+         var receivedFirstName = null;
+         server.use(
+@@ -125,15 +129,7 @@ describe('CustomersListPage Component test', () => {
+         );
+ 
+         const mockRouter = createMockRouter()
+-        let receivedUrl = null;
+-        let receivedAs = null;
+-        let receivedOptions = null;
+-        mockRouter.push = function (url, as, options) {
+-            receivedUrl = url;
+-            receivedAs = as;
+-            receivedOptions = options;
+-            return;
+-        }
++        mockRouter.push = jest.fn()
+         mockRouter.pathname = 'test-path-name';
+         mockRouter.query = {
+             firstName: 'test-old-first-name',
+@@ -156,11 +152,12 @@ describe('CustomersListPage Component test', () => {
+         await waitFor(() => expect(callCount).toBe(2));
+         await waitFor(() => expect(receivedFirstName).toBe('test-first-name'));
+ 
+-        expect(receivedUrl.pathname).toBe("test-path-name");
+-        expect(receivedUrl.query.firstName).toBe("test-first-name");
+-        expect(receivedUrl.query.someOtherQuery).toBe("test-query");
+-        expect(receivedAs).toBeUndefined();
+-        expect(receivedOptions.shallow).toBe(true);
++        expect(mockRouter.push.mock.calls.length).toBe(1);
++        expect(mockRouter.push.mock.calls[0][0].pathname).toBe("test-path-name");
++        expect(mockRouter.push.mock.calls[0][0].query.firstName).toBe("test-first-name");
++        expect(mockRouter.push.mock.calls[0][0].query.someOtherQuery).toBe("test-query");
++        expect(mockRouter.push.mock.calls[0][1]).toBeUndefined();
++        expect(mockRouter.push.mock.calls[0][2].shallow).toBe(true);
+     })
+ 
+     test('does not filter customers by first name given empty input and removes first name from query', async () => {
+@@ -180,15 +177,7 @@ describe('CustomersListPage Component test', () => {
+         );
+ 
+         const mockRouter = createMockRouter()
+-        let receivedUrl = null;
+-        let receivedAs = null;
+-        let receivedOptions = null;
+-        mockRouter.push = function (url, as, options) {
+-            receivedUrl = url;
+-            receivedAs = as;
+-            receivedOptions = options;
+-            return;
+-        }
++        mockRouter.push = jest.fn()
+         mockRouter.pathname = 'test-path-name';
+         mockRouter.query = {
+             firstName: 'test-old-first-name',
+@@ -211,11 +200,12 @@ describe('CustomersListPage Component test', () => {
+         await waitFor(() => expect(callCount).toBe(2));
+         await waitFor(() => expect(receivedFirstName).toBeNull());
+ 
+-        expect(receivedUrl.pathname).toBe("test-path-name");
+-        expect(receivedUrl.query.firstName).toBeUndefined();
+-        expect(receivedUrl.query.someOtherQuery).toBe("test-query");
+-        expect(receivedAs).toBeUndefined();
+-        expect(receivedOptions.shallow).toBe(true);
++        expect(mockRouter.push.mock.calls.length).toBe(1);
++        expect(mockRouter.push.mock.calls[0][0].pathname).toBe("test-path-name");
++        expect(mockRouter.push.mock.calls[0][0].query.firstName).toBeUndefined();
++        expect(mockRouter.push.mock.calls[0][0].query.someOtherQuery).toBe("test-query");
++        expect(mockRouter.push.mock.calls[0][1]).toBeUndefined();
++        expect(mockRouter.push.mock.calls[0][2].shallow).toBe(true);
+     })
+ 
+     test('displays empty customers', async () => {
+diff --git a/__tests__/pages/customers/new_page.test.js b/__tests__/pages/customers/new_page.test.js
+index 2cf5ff8..cbb067d 100644
+--- a/__tests__/pages/customers/new_page.test.js
++++ b/__tests__/pages/customers/new_page.test.js
+@@ -8,6 +8,7 @@ import { NewCustomerPage } from "../../../pages/customers/new";
+ 
+ describe('NewCustomerPage Component test', () => {
+     beforeEach(() => {
++        jest.clearAllMocks();
+         server.use(
+             rest.post(process.env.NEXT_PUBLIC_CUSTOMER_API_BASE_URL + "/customers", (req, res, ctx) => {
+                 return res(
+@@ -17,14 +18,12 @@ describe('NewCustomerPage Component test', () => {
+         );
+     });
+ 
++    afterEach(() => {
++        jest.clearAllMocks();
++    });
++
+     test('navigation links', async () => {
+-        var redirectUrl = null;
+-        const mockRouter = createMockRouter()
+-        mockRouter.push = function(url, as, options) {
+-            redirectUrl = url;
+-            return;
+-        }
+-        render(<NewCustomerPage router={mockRouter} />);
++        render(<NewCustomerPage router={createMockRouter()} />);
+         expect(screen.queryByTestId('home-link').getAttribute("href")).toBe('/');
+         expect(screen.queryByTestId('list-customers-link').getAttribute("href")).toBe('/customers/list');
+         expect(screen.queryByTestId('cancel-button').getAttribute("href")).toBe('/customers/list');
+@@ -43,12 +42,8 @@ describe('NewCustomerPage Component test', () => {
+             }),
+         );
+ 
+-        var redirectUrl = null;
+         const mockRouter = createMockRouter()
+-        mockRouter.push = function(url, as, options) {
+-            redirectUrl = url;
+-            return;
+-        }
++        mockRouter.push = jest.fn()
+         render(<NewCustomerPage router={mockRouter} />);
+         expect(screen.queryByTestId('first-name').getAttribute("value")).toBe('');
+         expect(screen.queryByTestId('last-name').getAttribute("value")).toBe('');
+@@ -60,7 +55,8 @@ describe('NewCustomerPage Component test', () => {
+         expect(screen.queryByTestId('submitting-content')).not.toBeNull();
+         await waitFor(() => expect(screen.queryByTestId('submitting-content')).toBeNull());
+ 
+-        await waitFor(() => expect(redirectUrl).toBe('/customers/list/'));
++        await waitFor(() => expect(mockRouter.push.mock.calls.length).toBe(1));
++        await waitFor(() => expect(mockRouter.push.mock.calls[0][0]).toBe('/customers/list/'));
+ 
+         await waitFor(() => expect(requestJson).not.toBeNull());
+         expect(requestJson.firstName).toBe('test-first-name');
