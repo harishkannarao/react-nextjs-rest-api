@@ -1,139 +1,120 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Head from 'next/head'
 import Link from 'next/link'
-import { withRouter } from 'next/router'
+import { useRouter } from 'next/router'
 import { listCustomers, deleteCustomer } from "../../components/common/customer";
 import * as queryParamModule from "../../components/common/query_param"
-import { CustomerList } from "../../components/customer/customer";
+import { CustomerModel, CustomerList } from "../../components/customer/customer";
 import { DisplayError } from "../../components/error/error";
+import { AxiosError } from 'axios';
 
-export class CustomersListPage extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            inputFirstName: '',
-            firstNameTypingTimeout: null,
-            error: null,
-            isProcessing: false,
-            data: []
-        };
-        this.handleDeleteCustomer = this.handleDeleteCustomer.bind(this);
-        this.errorHandler = this.errorHandler.bind(this);
-        this.handleFirstNameChange = this.handleFirstNameChange.bind(this);
-        this.fetchData = this.fetchData.bind(this);
+
+export function CustomersListPage() {
+    const router = useRouter();
+    const [title, setTitle] = useState('List - Customers');
+    const [inputFirstName, setInputFirstName] = useState('');
+    const [firstNameTypingTimeout, setFirstNameTypingTimeout] = useState(undefined);
+    const [error, setError] = useState(undefined);
+    const [isProcessing, setIsProcessing] = useState(false);
+    const [data, setData] = useState([]);
+
+    function errorHandler(httpError) {
+        setIsProcessing(false);
+        setError(httpError);
     }
 
-    handleFirstNameChange(event) {
-        event.preventDefault();
-        if (this.state.firstNameTypingTimeout) {
-            clearTimeout(this.state.firstNameTypingTimeout);
+    function fetchData(firstName) {
+        setIsProcessing(true);
+        const successHandler = (result) => {
+            setIsProcessing(false);
+            setData(result.data);
+            setError(undefined);
         }
-        this.setState({
-            'inputFirstName': event.target.value,
-            firstNameTypingTimeout: setTimeout(() => {
-                this.fetchData();
-            }, 500)
-        });
-        const query = this.props.router.query;
+        listCustomers(firstName, successHandler, errorHandler);
+    }
+
+    function handleFirstNameChange(event) {
+        event.preventDefault();
+        if (firstNameTypingTimeout) {
+            clearTimeout(firstNameTypingTimeout);
+            setFirstNameTypingTimeout(undefined);
+        }
+        setInputFirstName(event.target.value);
+        if (event.target.value.trim() != '') {
+            setTitle(event.target.value + " :: " + 'List - Customers');
+        } else {
+            setTitle('List - Customers');
+        }
+        setFirstNameTypingTimeout(setTimeout(() => {
+            fetchData(event.target.value.trim());
+        }, 500));
+        let query = router.query;
         if (event.target.value.trim() == '') {
             delete query['firstName'];
         } else {
             query['firstName'] = event.target.value;
         }
         const url = {
-            'pathname': this.props.router.pathname,
+            'pathname': router.pathname,
             'query': query
         }
-        this.props.router.push(url, undefined, { shallow: true });
+        router.push(url, undefined, { shallow: true });
     }
 
-    errorHandler(httpError) {
-        this.setState({
-            isProcessing: false,
-            error: httpError
-        });
-    }
-
-    handleDeleteCustomer(event) {
+    function handleDeleteCustomer(event) {
         event.preventDefault();
-        this.setState({
-            isProcessing: true
-        });
-        const successHandler = (result) => {
-            this.fetchData();
+        setIsProcessing(true);
+        const successHandler = (_result) => {
+            fetchData(inputFirstName.trim());
         }
-        const data = { 'id': Number(event.target.getAttribute('data-id')) }
-        deleteCustomer(data, successHandler, this.errorHandler)
+        const data = { 'id': Number(event.currentTarget.getAttribute('data-id')) }
+        deleteCustomer(data, successHandler, errorHandler)
     }
 
-    fetchData(firstName) {
-        this.setState({
-            isProcessing: true
-        });
-        const successHandler = (result) => {
-            this.setState({
-                isProcessing: false,
-                data: result.data,
-                error: null,
-            });
-        }
-        var resolvedFirstName = firstName;
-        if (resolvedFirstName == null) {
-            resolvedFirstName = this.state.inputFirstName.trim();
-        }
-        listCustomers(resolvedFirstName, successHandler, this.errorHandler);
-    }
-
-    componentDidMount() {
-        var firstName = queryParamModule.getParameterByName("firstName");
+    useEffect(() => {
+        let firstName = queryParamModule.getParameterByName("firstName");
         if (firstName != null) {
-            this.setState({
-                'inputFirstName': firstName
-            })
+            setInputFirstName(firstName);
+            if (firstName.trim() != '') {
+                setTitle(firstName + " :: " + 'List - Customers');
+            }
         }
-        this.fetchData(firstName);
-    }
+        fetchData(firstName);
+        return () => {
+            if (firstNameTypingTimeout) {
+                clearTimeout(firstNameTypingTimeout);
+            }
+        };
+    }, []);
 
-    componentWillUnmount() {
-        if (this.state.firstNameTypingTimeout) {
-            clearTimeout(this.state.firstNameTypingTimeout);
-        }
-    }
-
-    render() {
-        var title = 'List - Customers';
-        if (this.state.inputFirstName.trim() != '') {
-            title = this.state.inputFirstName + " :: " + title;
-        }
-        return (
-            <div>
-                <Head>
-                    <title>{title}</title>
-                </Head>
-                <h3>
-                    <Link href="/">
-                        <a data-testid="home-link">Home</a>
-                    </Link>
-                </h3>
-                <h3>
-                    <Link href="/customers/new/">
-                        <a data-testid="new-customer-link">New - Customer</a>
-                    </Link>
-                </h3>
-                {
-                    !this.state.isProcessing && this.state.error &&
-                    <DisplayError error={this.state.error} />
-                }
-                <label>
-                    First Name:
+    return (
+        <div>
+            <Head>
+                <title>{title}</title>
+            </Head>
+            <h3>
+                <Link href="/">
+                    <a data-testid="home-link">Home</a>
+                </Link>
+            </h3>
+            <h3>
+                <Link href="/customers/new/">
+                    <a data-testid="new-customer-link">New - Customer</a>
+                </Link>
+            </h3>
+            {
+                !isProcessing && error &&
+                <DisplayError error={error} />
+            }
+            <label>
+                First Name:
                         <input data-testid="input-first-name" name="inputFirstName" type="text"
-                        value={this.state.inputFirstName}
-                        onChange={this.handleFirstNameChange} />
-                </label>
-                <CustomerList router={this.props.router} isProcessing={this.state.isProcessing} handleDeleteCustomer={this.handleDeleteCustomer} data={this.state.data} />
-            </div>
-        );
-    }
+                    value={inputFirstName}
+                    onChange={handleFirstNameChange} />
+            </label>
+            <CustomerList router={router} isProcessing={isProcessing} handleDeleteCustomer={handleDeleteCustomer} data={data} />
+        </div>
+    )
 }
 
-export default withRouter(CustomersListPage)
+export default CustomersListPage;
