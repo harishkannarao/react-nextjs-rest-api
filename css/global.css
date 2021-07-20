@@ -1,4 +1,7 @@
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-    background-color: ivory;
-  }
-  
+  background-color: ivory;
+}
