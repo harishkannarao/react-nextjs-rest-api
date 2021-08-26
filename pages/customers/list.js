@@ -4,14 +4,14 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { listCustomers, deleteCustomer } from "../../components/common/customer";
 import * as queryParamModule from "../../components/common/query_param"
-import { CustomerModel, CustomerList } from "../../components/customer/customer";
+import { CustomerList } from "../../components/customer/customer";
 import { DisplayError } from "../../components/error/error";
-import { AxiosError } from 'axios';
 
 
 export function CustomersListPage() {
     const router = useRouter();
-    const [title, setTitle] = useState('List - Customers');
+    const defaultTitle = 'List - Customers';
+    const [title, setTitle] = useState(defaultTitle);
     const [inputFirstName, setInputFirstName] = useState('');
     const [firstNameTypingTimeout, setFirstNameTypingTimeout] = useState(undefined);
     const [error, setError] = useState(undefined);
@@ -40,11 +40,6 @@ export function CustomersListPage() {
             setFirstNameTypingTimeout(undefined);
         }
         setInputFirstName(event.target.value);
-        if (event.target.value.trim() != '') {
-            setTitle(event.target.value + " :: " + 'List - Customers');
-        } else {
-            setTitle('List - Customers');
-        }
         setFirstNameTypingTimeout(setTimeout(() => {
             fetchData(event.target.value.trim());
         }, 500));
@@ -71,13 +66,18 @@ export function CustomersListPage() {
         deleteCustomer(data, successHandler, errorHandler)
     }
 
+    function updateTitle() {
+        if (inputFirstName.trim() != '') {
+            setTitle(inputFirstName + " :: " + 'List - Customers');
+        } else {
+            setTitle(defaultTitle);
+        }
+    }
+
     useEffect(() => {
         let firstName = queryParamModule.getParameterByName("firstName");
         if (firstName != null) {
             setInputFirstName(firstName);
-            if (firstName.trim() != '') {
-                setTitle(firstName + " :: " + 'List - Customers');
-            }
         }
         fetchData(firstName);
         return () => {
@@ -86,6 +86,8 @@ export function CustomersListPage() {
             }
         };
     }, []);
+
+    useEffect(() => updateTitle(), [inputFirstName]);
 
     return (
         <div>
