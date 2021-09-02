@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { createCustomer } from '../../components/common/customer'
 import { DisplayError } from "../../components/error/error";
-import { AxiosError } from 'axios';
 
-export function NewCustomerPage() {
+export function NewCustomerPage(props) {
     const router = useRouter();
     const [error, setError] = useState(undefined);
     const [inputFirstName, setInputFirstName] = useState('');
@@ -34,6 +33,13 @@ export function NewCustomerPage() {
         }
         createCustomer(data, successHandler, errorHandler);
     }
+
+    useEffect(() => {
+        props.setCommonHeader('Custom Header');
+        return () => {
+            props.setCommonHeader(undefined);
+        };
+    }, []);
 
     return (
         <div>
