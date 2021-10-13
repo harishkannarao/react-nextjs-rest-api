@@ -20,7 +20,7 @@
     "react-test-renderer": "17.0.1",
     "serve": "11.3.2",
     "start-server-and-test": "1.12.0",
-    "cypress": "7.3.0",
+    "cypress": "8.6.0",
     "cypress-grep": "2.3.0",
     "mocha": "7.2.0",
     "mochawesome": "6.1.1",
