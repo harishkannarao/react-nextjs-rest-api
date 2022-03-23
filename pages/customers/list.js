@@ -75,17 +75,19 @@ export function CustomersListPage() {
     }
 
     useEffect(() => {
-        let firstName = queryParamModule.getParameterByName("firstName");
-        if (firstName != null) {
-            setInputFirstName(firstName);
-        }
-        fetchData(firstName);
-        return () => {
-            if (firstNameTypingTimeout) {
-                clearTimeout(firstNameTypingTimeout);
+        if (router.isReady) {
+            let firstName = queryParamModule.getParameterByName("firstName");
+            if (firstName != null) {
+                setInputFirstName(firstName);
             }
-        };
-    }, []);
+            fetchData(firstName);
+            return () => {
+                if (firstNameTypingTimeout) {
+                    clearTimeout(firstNameTypingTimeout);
+                }
+            };
+        }
+    }, [router.isReady]);
 
     useEffect(() => updateTitle(), [inputFirstName]);
 
