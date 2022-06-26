@@ -1,6 +1,7 @@
 name: 'CI-deploy-main-to-aws-development'
 
 on:
+  workflow_dispatch:
   repository_dispatch:
     types: do-deploy-main-to-aws-development
 
