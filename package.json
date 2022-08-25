@@ -27,7 +27,8 @@
     "open-api-mocker": "^1.11.1",
     "react-test-renderer": "*",
     "serve": "*",
-    "start-server-and-test": "*"
+    "start-server-and-test": "*",
+    "npm-check-updates": "*"
   },
   "scripts": {
     "postinstall": "npx next telemetry disable",
@@ -43,6 +44,7 @@
     "start-server-and-test": "start-server-and-test serve ${PORT:-3000} cypress:run-ci",
     "open-api-mocker": "open-api-mocker --port 8180 --schema open_api_spec/OpenApiSpec.json",
     "mochawesome-merge": "mochawesome-merge ./cypress-report/mochawesome-report/*.json -o ./cypress-report/report/cypress_full.json",
-    "marge": "marge -i --saveHtml -f cypress_full -o ./cypress-report/report ./cypress-report/report/cypress_full.json"
+    "marge": "marge -i --saveHtml -f cypress_full -o ./cypress-report/report ./cypress-report/report/cypress_full.json",
+    "ncu": "ncu -u"
   }
 }
