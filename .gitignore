@@ -5,3 +5,4 @@ node_modules/
 out/
 jest-stare/
 cypress-report/
+prod_artifact/
