@@ -75,5 +75,4 @@ or
 
 ### Generate full cypress html report
 
-    npm run mochawesome-merge && npm run marge
-    
+    npm run mochawesome-merge && npm run marge  
