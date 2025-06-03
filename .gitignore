@@ -6,3 +6,4 @@ out/
 jest-stare/
 cypress-report/
 prod_artifact/
+.DS_store
